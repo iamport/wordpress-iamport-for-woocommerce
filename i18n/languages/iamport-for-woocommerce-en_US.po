@@ -1,0 +1,555 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the iamport-for-woocommerce2 package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: iamport-for-woocommerce2 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-06-23 09:14+0900\n"
+"PO-Revision-Date: 2016-06-23 10:47+0900\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.8.8\n"
+"Last-Translator: \n"
+"Language: en\n"
+
+#: plugin_src/IamportPlugin.php:94
+msgid "해당되는 woocommerce gateway를 찾을 수 없습니다."
+msgstr "Woocommerce could not find the corresponding gateway."
+
+#: plugin_src/IamportPlugin.php:150
+msgid "구매자 환불요청"
+msgstr "Refund request"
+
+#: plugin_src/IamportPlugin.php:155
+msgid "구매자요청에 의해 전액 환불완료"
+msgstr "Completion of refund"
+
+#: plugin_src/IamportPlugin.php:220 plugin_src/IamportPlugin.php:223
+msgid "[아임포트] 가맹점 식별코드"
+msgstr "[import] merchant identification code"
+
+#: plugin_src/IamportPlugin.php:222 plugin_src/IamportPlugin.php:229
+#: plugin_src/IamportPlugin.php:236 plugin_src/iamport-foreign.php:56
+#: plugin_src/iamport-foreign.php:63 plugin_src/iamport-subscription.php:63
+#: plugin_src/iamport-subscription.php:70
+msgid ""
+"https://admin.iamport.kr에서 회원가입 후, \"시스템설정\" > \"내정보\"에서 "
+"확인하실 수 있습니다."
+msgstr ""
+"Https://admin.iamport.kr membership, \"system settings\" can be found in "
+"the \"My Info\" >."
+
+#: plugin_src/IamportPlugin.php:227 plugin_src/IamportPlugin.php:230
+#: plugin_src/iamport-foreign.php:54 plugin_src/iamport-foreign.php:57
+#: plugin_src/iamport-subscription.php:61
+#: plugin_src/iamport-subscription.php:64
+msgid "[아임포트] REST API 키"
+msgstr "[import] REST API key"
+
+#: plugin_src/IamportPlugin.php:234 plugin_src/IamportPlugin.php:237
+#: plugin_src/iamport-foreign.php:61 plugin_src/iamport-foreign.php:64
+#: plugin_src/iamport-subscription.php:68
+#: plugin_src/iamport-subscription.php:71
+msgid "[아임포트] REST API Secret"
+msgstr "[import] REST API Secret"
+
+#: plugin_src/IamportPlugin.php:298 plugin_src/IamportPlugin.php:299
+msgid "요청하신 결제금액이 다릅니다."
+msgstr "The requested payment amount."
+
+#: plugin_src/IamportPlugin.php:313 plugin_src/iamport-vbank.php:11
+#: plugin_src/iamport-vbank.php:31
+msgid "가상계좌 입금대기 중"
+msgstr "deposit only bank account pending"
+
+#: plugin_src/IamportPlugin.php:318 plugin_src/IamportPlugin.php:319
+msgid "실제 결제가 이루어지지 않았습니다."
+msgstr "The actual payment was not made."
+
+#: plugin_src/IamportPlugin.php:322 plugin_src/IamportPlugin.php:323
+msgid "결제요청 승인에 실패하였습니다."
+msgstr "Payment request failed."
+
+#: plugin_src/IamportPlugin.php:330
+#, php-format
+msgid "결제승인정보를 받아오지 못했습니다. 관리자에게 문의해주세요. %s"
+msgstr "Security check Failed. Contact Administrator. %s"
+
+#: plugin_src/IamportPlugin.php:383
+#, php-format
+msgid "%s 원 환불완료"
+msgstr "%s won complete refund"
+
+#: plugin_src/iamport-card.php:8
+msgid "아임포트(신용카드)"
+msgstr "import (credit card) payments"
+
+#: plugin_src/iamport-card.php:9 plugin_src/iamport-kakao.php:9
+#: plugin_src/iamport-trans.php:8 plugin_src/iamport-vbank.php:54
+msgid ""
+"=> 아임포트 서비스를 이용해 결제모듈을 연동할 수 있습니다.<br>=> [아임포"
+"트] X PG사 제휴할인혜택을 받아보세요! <a href=\"https://admin.iamport.kr\" "
+"target=\"_blank\">PG 신규계약 프로모션 안내</a><br>=> 아임포트의 최신 공지"
+"사항도 놓치지 마세요! <a href=\"https://admin.iamport.kr\" target=\"_blank"
+"\">공지사항보기</a>"
+msgstr ""
+"= Import service billing module Ah > click Associate.<br>= > [import] X "
+"jump four partnership PG discounts! <a href=\"https://admin.iamport.kr\" "
+"target=\"_blank\">PG new contract promotions</a><br>Don't miss the latest "
+"notices <a href=\"https://admin.iamport.kr\" target=\"_blank"
+"\">Announcements view</a>"
+
+#: plugin_src/iamport-card.php:29 plugin_src/iamport-foreign.php:41
+#: plugin_src/iamport-kakao.php:29 plugin_src/iamport-kpay.php:29
+#: plugin_src/iamport-phone.php:29 plugin_src/iamport-subscription.php:48
+#: plugin_src/iamport-trans.php:30 plugin_src/iamport-vbank.php:78
+msgid "Enable/Disable"
+msgstr "Enable/Disable"
+
+#: plugin_src/iamport-card.php:31
+msgid "아임포트(신용카드) 결제 사용"
+msgstr "import (credit card) payments"
+
+#: plugin_src/iamport-card.php:35 plugin_src/iamport-foreign.php:47
+#: plugin_src/iamport-kakao.php:35 plugin_src/iamport-kpay.php:35
+#: plugin_src/iamport-phone.php:41 plugin_src/iamport-subscription.php:54
+#: plugin_src/iamport-trans.php:36 plugin_src/iamport-vbank.php:84
+msgid "Title"
+msgstr "Title"
+
+#: plugin_src/iamport-card.php:37 plugin_src/iamport-foreign.php:49
+#: plugin_src/iamport-kakao.php:37 plugin_src/iamport-kpay.php:37
+#: plugin_src/iamport-phone.php:43 plugin_src/iamport-subscription.php:56
+#: plugin_src/iamport-trans.php:38 plugin_src/iamport-vbank.php:86
+msgid "구매자에게 표시될 구매수단명"
+msgstr "Purchase means who is displayed in the buyers"
+
+#: plugin_src/iamport-card.php:38
+msgid "신용카드 결제"
+msgstr "Payment by credit card"
+
+#: plugin_src/iamport-card.php:42 plugin_src/iamport-kakao.php:42
+#: plugin_src/iamport-kpay.php:42 plugin_src/iamport-phone.php:48
+#: plugin_src/iamport-trans.php:43 plugin_src/iamport-vbank.php:91
+msgid "Customer Message"
+msgstr "Customer Message"
+
+#: plugin_src/iamport-card.php:44 plugin_src/iamport-kakao.php:44
+#: plugin_src/iamport-kpay.php:44 plugin_src/iamport-phone.php:50
+#: plugin_src/iamport-trans.php:45 plugin_src/iamport-vbank.php:93
+msgid "구매자에게 결제수단에 대한 상세설명을 합니다."
+msgstr "the details of the settlement means to the buyer."
+
+#: plugin_src/iamport-card.php:45 plugin_src/iamport-kpay.php:45
+msgid ""
+"주문확정 버튼을 클릭하시면 신용카드 결제창이 나타나 결제를 진행하실 수 있습"
+"니다."
+msgstr ""
+"Click on the order confirmation button credit card payment window appears, "
+"you can proceed to checkout."
+
+#: plugin_src/iamport-card.php:64 plugin_src/iamport-kakao.php:64
+#: plugin_src/iamport-kpay.php:61 plugin_src/iamport-phone.php:77
+#: plugin_src/iamport-trans.php:80 plugin_src/iamport-vbank.php:128
+msgid "결제 상세"
+msgstr "CHECKOUT DETAILS"
+
+#: plugin_src/iamport-card.php:68 plugin_src/iamport-kakao.php:68
+#: plugin_src/iamport-kpay.php:65 plugin_src/iamport-phone.php:81
+#: plugin_src/iamport-trans.php:84 plugin_src/iamport-vbank.php:132
+msgid "결제수단"
+msgstr "View Payment"
+
+#: plugin_src/iamport-card.php:69
+msgid "신용카드"
+msgstr "Credit card"
+
+#: plugin_src/iamport-card.php:72 plugin_src/iamport-kakao.php:72
+#: plugin_src/iamport-kpay.php:69 plugin_src/iamport-phone.php:85
+#: plugin_src/iamport-trans.php:88 plugin_src/iamport-vbank.php:149
+msgid "매출전표"
+msgstr "Sales"
+
+#: plugin_src/iamport-card.php:73 plugin_src/iamport-kakao.php:73
+#: plugin_src/iamport-kpay.php:70 plugin_src/iamport-phone.php:86
+#: plugin_src/iamport-trans.php:89 plugin_src/iamport-vbank.php:150
+#, php-format
+msgid "영수증보기(%s)"
+msgstr "receipts (%s)"
+
+#: plugin_src/iamport-foreign.php:7
+msgid "아임포트(해외카드결제)"
+msgstr "imported (overseas card payment) payment"
+
+#: plugin_src/iamport-foreign.php:8
+msgid ""
+"아임포트를 통해 VISA/MASTER/JCB 카드결제를 사용하실 수 있습니다.(JTNet PG"
+"사 가입이 필요하며 KRW 원화로 결제가 됩니다)"
+msgstr ""
+"VISA/MASTER/JCB through Abu import the payment card can be used. (Requires "
+"a subscription payment has won four PG JTNet KRW)"
+
+#: plugin_src/iamport-foreign.php:43
+msgid "아임포트(해외카드결제) 결제 사용"
+msgstr "imported (overseas card payment) payment"
+
+#: plugin_src/iamport-foreign.php:50
+msgid "해외카드결제"
+msgstr "Credit Card"
+
+#: plugin_src/iamport-foreign.php:104 plugin_src/iamport-subscription.php:187
+msgid ""
+"암호화되어 전송된 카드정보를 복호화하는데 실패하였습니다. 관리자에게 문의해"
+"주세요."
+msgstr "Security check Failed. Contact Administrator."
+
+#: plugin_src/iamport-foreign.php:139
+#, php-format
+msgid "해외카드결제에 실패하였습니다. (status : %s)"
+msgstr "Payment has failed. Amount: %s."
+
+#: plugin_src/iamport-kakao.php:8
+msgid "아임포트(카카오페이)"
+msgstr "import (kakao pay)"
+
+#: plugin_src/iamport-kakao.php:31
+msgid ""
+"아임포트(카카오페이) 결제 사용. (카카오페이를 사용하시려면, <a href="
+"\"https://admin.iamport.kr/settings\" target=\"_blank\">아임포트 관리자페이"
+"지의 PG설정화면</a>에서 \"추가PG사\"로 카카오페이를 추가 후 사용해주세요.)"
+msgstr ""
+"import (kakao pay) payment. (kakao pay <a href=\"https://admin.iamport.kr/"
+"settings\" target=\"_blank\">import Manager page, PG settings screen</a>"
+"\"Add PG\" after adding the kakao pay.)"
+
+#: plugin_src/iamport-kakao.php:38
+msgid "카카오페이 결제"
+msgstr "kakao pay payment"
+
+#: plugin_src/iamport-kakao.php:45
+msgid ""
+"주문확정 버튼을 클릭하시면 카카오페이 결제창이 나타나 결제를 진행하실 수 있"
+"습니다."
+msgstr ""
+"Click on the order confirmation page button allows you to kakao payment "
+"window appears, proceed to checkout."
+
+#: plugin_src/iamport-kakao.php:69
+msgid "카카오페이"
+msgstr "kakao pay"
+
+#: plugin_src/iamport-kpay.php:8
+msgid "아임포트(KPay)"
+msgstr "import (KPay)"
+
+#: plugin_src/iamport-kpay.php:9
+msgid ""
+"=> 아임포트 서비스를 이용해 KG이니시스의 간편결제인 KPay를 연동할 수 있습니"
+"다.<br>=> [아임포트] X PG사 제휴할인혜택을 받아보세요! <a href=\"https://"
+"admin.iamport.kr\" target=\"_blank\">PG 신규계약 프로모션 안내</a><br>=> 아"
+"임포트의 최신 공지사항도 놓치지 마세요! <a href=\"https://admin.iamport.kr"
+"\" target=\"_blank\">공지사항보기</a>"
+msgstr ""
+"= > import service ease of payment is of the Sith KPay KG, you can "
+"associate.<br>= > [Oh import] X jump four partnership PG discounts! <a "
+"href=\"https://admin.iamport.kr\" target=\"_blank\">PG new contract "
+"promotions</a><br>Don't miss the latest notices Abu impoteuyi = >! <a href="
+"\"https://admin.iamport.kr\" target=\"_blank\">Announcements view</a>"
+
+#: plugin_src/iamport-kpay.php:31
+msgid "아임포트(KPay) 결제 사용"
+msgstr "uses import (KPay) payment"
+
+#: plugin_src/iamport-kpay.php:38
+msgid "KPay 결제"
+msgstr "Kpay"
+
+#: plugin_src/iamport-kpay.php:66
+msgid "신용카드(KPay)"
+msgstr "Credit card (KPay)"
+
+#: plugin_src/iamport-phone.php:7
+msgid "아임포트(휴대폰소액결제)"
+msgstr "import (mobile payments)"
+
+#: plugin_src/iamport-phone.php:8
+msgid ""
+"=> 아임포트 서비스를 이용해 결제모듈을 연동할 수 있습니다.<br>=> [아임포"
+"트] X PG사 제휴할인혜택을 받아보세요! <a href=\"http://www.iamport.kr/"
+"promotion\" target=\"_blank\">다날과 계약 후 이용하시면 보다 합리적인 수수"
+"료, 정산주기 조건으로 휴대폰결제 서비스를 이용하실 수 있습니다.</"
+"a><br><br>=> 아임포트의 최신 공지사항도 놓치지 마세요! <a href=\"https://"
+"admin.iamport.kr\" target=\"_blank\">공지사항보기</a>"
+msgstr ""
+
+#: plugin_src/iamport-phone.php:31
+msgid "아임포트(휴대폰소액결제) 결제 사용"
+msgstr "uses import (mobile payments) payment"
+
+#: plugin_src/iamport-phone.php:37
+msgid "다날 계약을 통해 휴대폰결제 사용 중이시면 체크해주세요."
+msgstr "All contract mobile payment via check if."
+
+#: plugin_src/iamport-phone.php:44
+msgid "휴대폰소액결제 결제"
+msgstr "Mobile payments"
+
+#: plugin_src/iamport-phone.php:51
+msgid ""
+"주문확정 버튼을 클릭하시면 휴대폰소액결제 결제창이 나타나 결제를 진행하실 "
+"수 있습니다."
+msgstr ""
+"Click on the button Confirm Order can be displayed in real-time bank "
+"transfer payment window proceed with the payment."
+
+#: plugin_src/iamport-phone.php:54
+msgid "디지털 상품"
+msgstr "Digital product"
+
+#: plugin_src/iamport-phone.php:55
+msgid ""
+"판매하시는 상품이 배송되는 형태의 실물이 아니라 디지털 파일 등 무형의 서비"
+"스 상품이라면 체크해주세요(통신사 필수 요구사항)"
+msgstr ""
+"Not the type of thing that you are selling, please check if the item is "
+"shipped, an intangible service products such as digital files (carriers "
+"made mandatory requirement)"
+
+#: plugin_src/iamport-phone.php:57
+msgid "디지털 상품인 경우 체크해주세요"
+msgstr "Please check if the digital product"
+
+#: plugin_src/iamport-phone.php:82
+msgid "휴대폰소액결제"
+msgstr "Mobile payments"
+
+#: plugin_src/iamport-subscription.php:7
+msgid "아임포트(정기결제)"
+msgstr "import (pre-payment)"
+
+#: plugin_src/iamport-subscription.php:8
+msgid "아임포트를 통해 정기결제를 사용하실 수 있습니다."
+msgstr "You can use the pre-payment through the import."
+
+#: plugin_src/iamport-subscription.php:50
+msgid "아임포트(정기결제) 결제 사용"
+msgstr "import (pre-payment) payment"
+
+#: plugin_src/iamport-subscription.php:57
+msgid "정기결제"
+msgstr "pre-payment"
+
+#: plugin_src/iamport-subscription.php:83
+msgid "Card Number"
+msgstr "Card Number"
+
+#: plugin_src/iamport-subscription.php:87
+msgid "Expiry (MM/YY)"
+msgstr "Expiry (MM/YY)"
+
+#: plugin_src/iamport-subscription.php:88
+msgid "MM / YY"
+msgstr "MM / YY"
+
+#: plugin_src/iamport-subscription.php:91
+msgid "카드소지자확인(생년월일 또는 사업자등록번호)"
+msgstr ""
+"Cardholder verification (date of birth or business registration number)"
+
+#: plugin_src/iamport-subscription.php:92
+msgid "생년월일 또는 사업자등록번호(법인카드)"
+msgstr "Date of birth or business registration number (corporate cards)"
+
+#: plugin_src/iamport-subscription.php:95
+#: plugin_src/iamport-subscription.php:96
+msgid "카드비밀번호 앞2자리"
+msgstr "Card in front of a two-digit password"
+
+#: plugin_src/iamport-subscription.php:125
+#, php-format
+msgid "정기결제승인에 실패하였습니다. (상세 : %s)"
+msgstr "Recurring payments fail to approve. (Detail:%s)"
+
+#: plugin_src/iamport-subscription.php:143
+#, php-format
+msgid "정기결제 최초 과금(signup fee)에 실패하였습니다. (상세사유 : %s)"
+msgstr "The first billing, pre-payment (signup fee) failed. (No reason:%s)"
+
+#: plugin_src/iamport-subscription.php:218
+#, php-format
+msgid "정기결제 최초 과금(signup fee)에 성공하였습니다. (imp_uid : %s)"
+msgstr "The first billing, pre-payment (signup fee). (imp_uid : %s)"
+
+#: plugin_src/iamport-subscription.php:222
+#, php-format
+msgid "정기결제 최초 과금(signup fee)에 실패하였습니다. (status : %s)"
+msgstr "The first billing, pre-payment (signup fee) failed. (status : %s)"
+
+#: plugin_src/iamport-subscription.php:228
+#, php-format
+msgid "정기결제 최초 과금(signup fee)에 실패하였습니다. (사유 : %s)"
+msgstr "The first billing, pre-payment (signup fee) failed. (Reason:%s)"
+
+#: plugin_src/iamport-subscription.php:261
+#, php-format
+msgid "정기결제 회차 과금(%s차결제)에 성공하였습니다. (imp_uid : %s)"
+msgstr "pre-payment times the car charging (%s car payment). (imp_uid : %s)"
+
+#: plugin_src/iamport-subscription.php:265
+#, php-format
+msgid "정기결제 회차 과금(%s차결제)에 실패하였습니다. (status : %s)"
+msgstr ""
+"pre-payment times the car charging (%s car payment) failed. (status : %s)"
+
+#: plugin_src/iamport-subscription.php:271
+#, php-format
+msgid "정기결제 회차 과금(%s차결제)에 실패하였습니다. (사유 : %s)"
+msgstr ""
+"pre-payment times the car charging (%s car payment) failed. (Reason:%s)"
+
+#: plugin_src/iamport-subscription.php:317
+msgid "정기결제 구매자정보 생성에 실패하였습니다."
+msgstr "Failed to generate pre-payment buyer information."
+
+#: plugin_src/iamport-subscription.php:321
+msgid "정기결제기능은 로그인된 사용자만 사용하실 수 있습니다."
+msgstr "pre-payment feature can be used only by users that are logged in."
+
+#: plugin_src/iamport-trans.php:7
+msgid "아임포트(실시간계좌이체)"
+msgstr "import (real-time bank transfer)"
+
+#: plugin_src/iamport-trans.php:32
+msgid "아임포트(실시간계좌이체) 결제 사용"
+msgstr "import (real-time bank transfer) payment"
+
+#: plugin_src/iamport-trans.php:39
+msgid "실시간계좌이체 결제"
+msgstr "Real-time bank transfer payments"
+
+#: plugin_src/iamport-trans.php:46
+msgid ""
+"주문확정 버튼을 클릭하시면 실시간계좌이체 결제창이 나타나 결제를 진행하실 "
+"수 있습니다."
+msgstr ""
+"Click on the button Confirm Order can be displayed in real-time bank "
+"transfer payment window proceed with the payment."
+
+#: plugin_src/iamport-trans.php:49
+msgid "실시간계좌이체 에스크로"
+msgstr "Real-time account escrow"
+
+#: plugin_src/iamport-trans.php:51
+msgid "실시간계좌이체 결제수단을 에스크로 방식으로 제공할까요?"
+msgstr ""
+"Do you want to provide a real-time account transfer settlement means in "
+"the escrow system ?"
+
+#: plugin_src/iamport-trans.php:53
+msgid ""
+"일반 실시간계좌이체가 에스크로(구매자 안전결제)방식의 실시간계좌이체로 대체"
+"됩니다."
+msgstr ""
+"Typical real-time account transfer is replaced with the real-time account "
+"transfer of escrow ( buyer safety settlement) system ."
+
+#: plugin_src/iamport-trans.php:85
+msgid "실시간계좌이체"
+msgstr "Real-time bank transfer"
+
+#: plugin_src/iamport-vbank.php:16
+#, php-format
+msgid "가상계좌 입금대기 중 <span class=\"count\">(%s)</span>"
+msgid_plural "가상계좌 입금대기 중 <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+"Deposit only bank account payment waiting <span class=\"count\">(%s)</span>"
+msgstr[1] ""
+"Deposit only bank account payment waiting <span class=\"count\">(%s)</span>"
+
+#: plugin_src/iamport-vbank.php:42
+msgid "(고객님께서 입금해주신 내역이 정상적으로 확인되었습니다.)"
+msgstr ""
+"( Content that customers who have payment has been successfully "
+"verified . )"
+
+#: plugin_src/iamport-vbank.php:53
+msgid "아임포트(가상계좌)"
+msgstr "import (deposit only bank account)"
+
+#: plugin_src/iamport-vbank.php:80
+msgid "아임포트(가상계좌) 결제 사용"
+msgstr "import (deposit only bank account) payment"
+
+#: plugin_src/iamport-vbank.php:87
+msgid "가상계좌 결제"
+msgstr "Deposit only bank account payment"
+
+#: plugin_src/iamport-vbank.php:94
+msgid ""
+"주문확정 버튼을 클릭하시면 가상계좌 주문개설 창이 나타나 결제를 진행하실 "
+"수 있습니다."
+msgstr ""
+"When you click the order confirm button , it can be deposit only bank "
+"account order opened the window to perform the display of payment ."
+
+#: plugin_src/iamport-vbank.php:97
+msgid "가상계좌 에스크로"
+msgstr "Deposit only bank account escrow"
+
+#: plugin_src/iamport-vbank.php:99
+msgid "가상계좌 결제수단을 에스크로 방식으로 제공할까요?"
+msgstr ""
+"It should provide a Deposit only bank account payment method as ESCROW way?"
+
+#: plugin_src/iamport-vbank.php:101
+msgid ""
+"일반 가상계좌가 에스크로(구매자 안전결제)방식의 가상계좌로 대체됩니다."
+msgstr ""
+"General virtual account is replaced with the deposit only bank account of "
+"escrow ( buyer safety settlement) system ."
+
+#: plugin_src/iamport-vbank.php:133
+msgid "가상계좌"
+msgstr "Deposit only bank account"
+
+#: plugin_src/iamport-vbank.php:136
+msgid "가상계좌 입금은행"
+msgstr "Deposit only bank account"
+
+#: plugin_src/iamport-vbank.php:141 plugin_src/iamport-vbank.php:154
+msgid "가상계좌번호"
+msgstr "Deposit only bank account number"
+
+#: plugin_src/iamport-vbank.php:142
+#, php-format
+msgid "입금완료( %s )"
+msgstr "Payment completed (%s)"
+
+#: plugin_src/iamport-vbank.php:145 plugin_src/iamport-vbank.php:158
+msgid "가상계좌 입금기한"
+msgstr "Deposit only bank account deadline"
+
+#: plugin_src/iamport-vbank.php:146
+msgid "입금완료"
+msgstr "Payment completed"
+
+#: plugin_src/iamport-vbank.php:155
+#, php-format
+msgid "%s 입금을 부탁드립니다."
+msgstr "%s please send deposit payment"
+
+#: plugin_src/iamport-vbank.php:172
+msgid "가상계좌 입금내역이 확인되었습니다."
+msgstr "Deposit only bank account has been confirmed."
+
+#: plugin_src/iamport-vbank.php:174
+msgid "아래의 가상계좌로 입금해주셔야 최종적으로 주문이 완료처리됩니다."
+msgstr ""
+"You'll have to credit account the Deposit only bank account, ultimately "
+"completed orders are processed."

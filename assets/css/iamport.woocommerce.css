@@ -1,0 +1,12 @@
+.woocommerce-checkout #payment div.payment_box .wc-credit-card-form-card-birth,
+.woocommerce-checkout #payment div.payment_box .wc-credit-card-form-card-pwd {
+	font-size: 1.5em;
+    padding: 8px;
+    background-repeat: no-repeat;
+    background-position: right .618em center;
+    background-size: 32px 20px;
+}
+
+.woocommerce-checkout #payment div.payment_box .wc-credit-card-form-card-quota {
+    margin-right: 10px;
+}
