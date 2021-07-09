@@ -1,4 +1,4 @@
-<p align="center"><a href="https://www.iamport.kr"><img src="https://ps.w.org/iamport-for-woocommerce/assets/banner-772x250.png" alt="Iamport For Woocommerce"></a></p>
+<p align="center"><a href="https://www.iamport.kr"><img src="https://ps.w.org/iamport-for-woocommerce/assets/banner-772x250.png" width="100%" alt="Iamport For Woocommerce"></a></p>
 
 > 신용카드/실시간이체/가상계좌/휴대폰소액결제 가능. 국내 여러 PG사를 지원.
 
