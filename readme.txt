@@ -11,6 +11,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 우커머스용 결제 플러그인. 신용카드/실시간이체/가상계좌/휴대폰소액결제 가능. 국내 여러 PG사를 지원.
 
 == Description ==
+Github 링크 : https://github.com/iamport/wordpress-iamport-for-woocommerce
 
 아임포트는 국내 PG서비스들을 표준화하고 있는 결제 서비스입니다. 아임포트 하나면 국내 여러 PG사들의 결제 기능을 표준화된 동일한 방식으로 사용할 수 있게 됩니다.
 이 플러그인은 아임포트 서비스를 우커머스(woocommerce)환경에 맞게 적용한 결제 플러그인입니다.

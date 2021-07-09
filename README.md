@@ -1,5 +1,8 @@
-# 우커머스용 아임포트 플러그인
+<p align="center"><a href="https://www.iamport.kr"><img src="https://ps.w.org/iamport-for-woocommerce/assets/banner-1544x500.png" alt="Iamport For Woocommerce"></a></p>
+
 > 신용카드/실시간이체/가상계좌/휴대폰소액결제 가능. 국내 여러 PG사를 지원.
+
+[워드프레스 플러그인 링크](https://wordpress.org/plugins/iamport-for-woocommerce/) 
 
 아임포트는 국내 PG서비스들을 표준화하고 있는 결제 서비스입니다.<br>
 아임포트 하나면 국내 여러 PG사들의 결제 기능을 표준화된 동일한 방식으로 사용할 수 있게 됩니다.
@@ -61,7 +64,7 @@ http://www.iamport.kr 에서 아임포트 서비스에 대한 보다 상세한 �
 
 ## FAQ
 ### 서비스 소개
-http://www.iamport.kr
+https://www.iamport.kr
 ### 관리자 페이지
 https://admin.iamport.kr
 ### 아임포트 docs
