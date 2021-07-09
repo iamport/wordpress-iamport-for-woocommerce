@@ -1,0 +1,6 @@
+/.github
+/manuals
+
+.distignore
+.gitignore
+README.md
