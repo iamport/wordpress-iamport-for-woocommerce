@@ -53,14 +53,14 @@ class WC_Gateway_Iamport_Kakao extends Base_Gateway_Iamport {
 			),
 			'show_button_on_categories' => array(
 				'title' => __( '카카오페이 구매버튼을 출력할 상품카테고리', 'iamport-for-woocommerce' ),
-				'description' => __( '"카카오페이 구매버튼 보이기"가 체크되어있을 때, 일부 상품 카테고리에만 카카오페이 구매버튼을 출력하도록 설정할 수 있습니다.', 'iamport-for-woocommerce' ),
+				'description' => __( '일부 상품 카테고리에만 카카오페이 구매버튼을 출력하도록 설정할 수 있습니다.', 'iamport-for-woocommerce' ),
 				'type' => 'multiselect',
 				'options' => array('all'=>__('[모든 카테고리]', 'iamport-for-woocommerce')) + $allCategories,
 				'default' => 'all',
 			),
-			'disable_button_on_categories' => array(
+			'hide_button_on_categories' => array(
 				'title' => __( '카카오페이 구매버튼을 비활성화시킬 상품카테고리', 'iamport-for-woocommerce' ),
-				'description' => __( '일부 상품 카테고리에만 카카오페이 구매버튼을 비활성상태로 출력하도록 설정할 수 있습니다.', 'iamport-for-woocommerce' ),
+				'description' => __( '일부 상품 카테고리에만 카카오페이 구매버튼을 출력하지 않도록 설정할 수 있습니다.', 'iamport-for-woocommerce' ),
 				'type' => 'multiselect',
 				'options' => array('none'=>__('[비활성화할 카테고리 없음]', 'iamport-for-woocommerce'), 'all'=>__('[모든 카테고리]', 'iamport-for-woocommerce')) + $allCategories,
 				'default' => 'none',
@@ -283,9 +283,9 @@ class WC_Gateway_Iamport_Kakao extends Base_Gateway_Iamport {
 	}
 
 	public function get_disabled_categories() {
-		if ( !isset($this->settings['disable_button_on_categories']) )	return array();
+		if ( !isset($this->settings['hide_button_on_categories']) )	return array();
 
-		$categories = $this->settings['disable_button_on_categories'];
+		$categories = $this->settings['hide_button_on_categories'];
 		if ( $categories === 'all' || in_array('all', $categories) )		return 'all';
 		if ( $categories === 'none' || in_array('none', $categories) )	return array();
 
