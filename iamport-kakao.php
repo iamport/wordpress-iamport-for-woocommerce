@@ -29,6 +29,8 @@ class WC_Gateway_Iamport_Kakao extends Base_Gateway_Iamport {
 	public function init_form_fields() {
 		parent::init_form_fields();
 
+		$allCategories = IamportHelper::get_all_categories();
+
 		$this->form_fields = array_merge( array(
 			'enabled' => array(
 				'title' => __( 'Enable/Disable', 'woocommerce' ),
@@ -48,6 +50,20 @@ class WC_Gateway_Iamport_Kakao extends Base_Gateway_Iamport {
 				'type' => 'textarea',
 				'description' => __( '구매자에게 결제수단에 대한 상세설명을 합니다.', 'iamport-for-woocommerce' ),
 				'default' => __( '주문확정 버튼을 클릭하시면 카카오페이 결제창이 나타나 결제를 진행하실 수 있습니다.', 'iamport-for-woocommerce' )
+			),
+			'show_button_on_categories' => array(
+				'title' => __( '카카오페이 구매버튼을 출력할 상품카테고리', 'iamport-for-woocommerce' ),
+				'description' => __( '"카카오페이 구매버튼 보이기"가 체크되어있을 때, 일부 상품 카테고리에만 카카오페이 구매버튼을 출력하도록 설정할 수 있습니다.', 'iamport-for-woocommerce' ),
+				'type' => 'multiselect',
+				'options' => array('all'=>__('[모든 카테고리]', 'iamport-for-woocommerce')) + $allCategories,
+				'default' => 'all',
+			),
+			'disable_button_on_categories' => array(
+				'title' => __( '카카오페이 구매버튼을 비활성화시킬 상품카테고리', 'iamport-for-woocommerce' ),
+				'description' => __( '일부 상품 카테고리에만 카카오페이 구매버튼을 비활성상태로 출력하도록 설정할 수 있습니다.', 'iamport-for-woocommerce' ),
+				'type' => 'multiselect',
+				'options' => array('none'=>__('[비활성화할 카테고리 없음]', 'iamport-for-woocommerce'), 'all'=>__('[모든 카테고리]', 'iamport-for-woocommerce')) + $allCategories,
+				'default' => 'none',
 			),
 			'use_new_version' => array(
 				'title' => __( '신규 카카오페이', 'iamport-for-woocommerce' ),
@@ -257,6 +273,25 @@ class WC_Gateway_Iamport_Kakao extends Base_Gateway_Iamport {
 		$this->_iamport_post_meta($order->get_id(), '_customer_uid', $customer_uid); //성공한 customer_uid저장
 	}
 
+	public function get_display_categories() {
+		if ( !isset($this->settings['show_button_on_categories']) )		return array();
+
+		$categories = $this->settings['show_button_on_categories'];
+		if ( $categories === 'all' || in_array('all', $categories) )	return 'all';
+
+		return $categories;
+	}
+
+	public function get_disabled_categories() {
+		if ( !isset($this->settings['disable_button_on_categories']) )	return array();
+
+		$categories = $this->settings['disable_button_on_categories'];
+		if ( $categories === 'all' || in_array('all', $categories) )		return 'all';
+		if ( $categories === 'none' || in_array('none', $categories) )	return array();
+
+		return $categories;
+	}
+
 	protected function get_order_name($order, $initial_payment=true) {
 		if ( $this->has_subscription($order->get_id()) ) {
 
@@ -280,3 +315,69 @@ class WC_Gateway_Iamport_Kakao extends Base_Gateway_Iamport {
 	}
 
 }
+
+class IamportKakaoButton {
+	private $gateway;
+
+	public function __construct($gateway) {
+		$this->gateway = $gateway;
+	}
+
+	public function init() {
+        add_filter( 'woocommerce_available_payment_gateways', array($this, 'kakao_unset_gateway_by_category'));
+    }
+
+	private function all_products_in_categories($product_ids, $categories) {
+		$all_match = true;
+		foreach ($product_ids as $id) {
+			$all_match = $all_match && IamportHelper::is_product_in_categories($id, $categories);
+		}
+
+		return $all_match;
+	}
+
+    private static function is_product_purchasable($product, $disabled_categories) {
+        $is_disabled = $disabled_categories === 'all' || IamportHelper::is_product_in_categories($product->get_id(), $disabled_categories);
+
+        return 	!$is_disabled &&
+                        $product->is_purchasable() &&
+//						$product->get_price() > 0 && 옵션 상품의 경우 base price 가 0원일 수 있다.
+                        $product->is_in_stock() &&
+                        $product->needs_shipping() &&
+                        !$product->is_downloadable();
+    }
+
+    public function kakao_unset_gateway_by_category($available_gateways) {
+        if ( ! is_checkout() ) return $available_gateways;
+        $cart_items = WC()->cart->get_cart();
+        if ( count($cart_items) == 0 )	return; //장바구니가 비어있으면 패스
+
+        $categories = $this->gateway->get_display_categories();
+        $disabled_categories = $this->gateway->get_disabled_categories();
+        $product_ids = array();
+        $enabled = true;
+
+        foreach ($cart_items as $key => $item) {
+            $product = wc_get_product($item["product_id"]);
+            $product_ids[] = $product->get_id();
+
+            if (!self::is_product_purchasable($product, $disabled_categories)) {
+                $enabled = false;
+                break;
+            }
+
+        }
+
+        if (!$enabled || !($categories === 'all' || $this->all_products_in_categories($product_ids, $categories))) unset($available_gateways['iamport_kakao']);
+
+        return $available_gateways;
+    }
+}
+
+add_action( 'init', function() {
+	$gateway = new WC_Gateway_Iamport_Kakao(); //TODO : 더 좋은 방법을 고민해야 함
+
+	$instPayButton = new IamportKakaoButton($gateway);
+
+	$instPayButton->init();
+});
