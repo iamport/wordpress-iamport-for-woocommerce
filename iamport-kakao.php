@@ -296,7 +296,7 @@ class WC_Gateway_Iamport_Kakao extends Base_Gateway_Iamport
     public function get_display_categories()
     {
         if (!isset($this->settings['show_button_on_categories'])) {
-            return array();
+            return 'all';
         }
 
         $categories = $this->settings['show_button_on_categories'];
@@ -375,12 +375,7 @@ class IamportKakaoButton
     {
         $is_disabled = $disabled_categories === 'all' || IamportHelper::is_product_in_categories($product->get_id(), $disabled_categories);
 
-        return 	!$is_disabled &&
-                        $product->is_purchasable() &&
-//						$product->get_price() > 0 && 옵션 상품의 경우 base price 가 0원일 수 있다.
-                        $product->is_in_stock() &&
-                        $product->needs_shipping() &&
-                        !$product->is_downloadable();
+        return 	!$is_disabled;
     }
 
     public function kakao_unset_gateway_by_category($available_gateways)
