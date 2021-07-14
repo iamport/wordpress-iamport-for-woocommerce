@@ -11,7 +11,7 @@ class WC_Gateway_Iamport_Kakao extends Base_Gateway_Iamport
         $this->method_title       = __('아임포트(카카오페이)', 'iamport-for-woocommerce');
         $this->method_description = __('=> 아임포트 서비스를 이용해 결제모듈을 연동할 수 있습니다.<br>=> [아임포트] X PG사 제휴할인혜택을 받아보세요! <a href="http://www.iamport.kr/pg#promotion" target="_blank">PG 신규계약 프로모션 안내</a><br>=> 아임포트의 최신 공지사항도 놓치지 마세요! <a href="http://www.iamport.kr/notice" target="_blank">공지사항보기</a>', 'iamport-for-woocommerce');
         $this->has_fields         = true;
-        $this->supports           = ['products', 'refunds', 'subscriptions', 'subscription_reactivation'/*이것이 있어야 subscription 후 active상태로 들어갈 수 있음*/, 'subscription_suspension', 'subscription_cancellation', 'subscription_date_changes', 'subscription_amount_changes', 'subscription_payment_method_change_customer', 'multiple_subscriptions'];
+        $this->supports           = array('products', 'refunds', 'subscriptions', 'subscription_reactivation'/*이것이 있어야 subscription 후 active상태로 들어갈 수 있음*/, 'subscription_suspension', 'subscription_cancellation', 'subscription_date_changes', 'subscription_amount_changes', 'subscription_payment_method_change_customer', 'multiple_subscriptions');
 
         $this->title           = $this->settings['title'];
         $this->description     = $this->settings['description'];
@@ -20,7 +20,7 @@ class WC_Gateway_Iamport_Kakao extends Base_Gateway_Iamport
         //actions
         // add_action( 'woocommerce_thankyou_'.$this->id, array( $this, 'iamport_order_detail' ) ); woocommerce_order_details_after_order_table 로 대체. 중복으로 나오고 있음
 
-        add_action('woocommerce_scheduled_subscription_payment_' . $this->id, [$this, 'scheduled_subscription_payment'], 10, 2);
+        add_action('woocommerce_scheduled_subscription_payment_' . $this->id, array($this, 'scheduled_subscription_payment'), 10, 2);
     }
 
     protected function get_gateway_id()
@@ -34,58 +34,58 @@ class WC_Gateway_Iamport_Kakao extends Base_Gateway_Iamport
 
         $allCategories = IamportHelper::get_all_categories();
 
-        $this->form_fields = array_merge([
-            'enabled' => [
+        $this->form_fields = array_merge(array(
+            'enabled' => array(
                 'title'   => __('Enable/Disable', 'woocommerce'),
                 'type'    => 'checkbox',
                 'label'   => __('아임포트(카카오페이) 결제 사용. (카카오페이를 사용하시려면, <a href="https://admin.iamport.kr/settings" target="_blank">아임포트 관리자페이지의 PG설정화면</a>에서 "추가PG사"로 카카오페이를 추가 후 사용해주세요.)', 'iamport-for-woocommerce'),
                 'default' => 'yes',
-            ],
-            'title' => [
+            ),
+            'title' => array(
                 'title'         => __('Title', 'woocommerce'),
                 'type'          => 'text',
                 'description'   => __('구매자에게 표시될 구매수단명', 'iamport-for-woocommerce'),
                 'default'       => __('카카오페이 결제', 'iamport-for-woocommerce'),
                 'desc_tip'      => true,
-            ],
-            'description' => [
+            ),
+            'description' => array(
                 'title'       => __('Customer Message', 'woocommerce'),
                 'type'        => 'textarea',
                 'description' => __('구매자에게 결제수단에 대한 상세설명을 합니다.', 'iamport-for-woocommerce'),
                 'default'     => __('주문확정 버튼을 클릭하시면 카카오페이 결제창이 나타나 결제를 진행하실 수 있습니다.', 'iamport-for-woocommerce'),
-            ],
-            'show_button_on_categories' => [
+            ),
+            'show_button_on_categories' => array(
                 'title'       => __('카카오페이 구매버튼을 출력할 상품카테고리', 'iamport-for-woocommerce'),
                 'description' => __('일부 상품 카테고리에만 카카오페이 구매버튼을 출력하도록 설정할 수 있습니다.', 'iamport-for-woocommerce'),
                 'type'        => 'multiselect',
-                'options'     => ['all'=>__('[모든 카테고리]', 'iamport-for-woocommerce')] + $allCategories,
+                'options'     => array('all'=>__('[모든 카테고리]', 'iamport-for-woocommerce')) + $allCategories,
                 'default'     => 'all',
-            ],
-            'hide_button_on_categories' => [
+            ),
+            'hide_button_on_categories' => array(
                 'title'       => __('카카오페이 구매버튼을 비활성화시킬 상품카테고리', 'iamport-for-woocommerce'),
                 'description' => __('일부 상품 카테고리에만 카카오페이 구매버튼을 출력하지 않도록 설정할 수 있습니다.', 'iamport-for-woocommerce'),
                 'type'        => 'multiselect',
-                'options'     => ['none'=>__('[비활성화할 카테고리 없음]', 'iamport-for-woocommerce'), 'all'=>__('[모든 카테고리]', 'iamport-for-woocommerce')] + $allCategories,
+                'options'     => array('none'=>__('[비활성화할 카테고리 없음]', 'iamport-for-woocommerce'), 'all'=>__('[모든 카테고리]', 'iamport-for-woocommerce')) + $allCategories,
                 'default'     => 'none',
-            ],
-            'use_new_version' => [
+            ),
+            'use_new_version' => array(
                 'title'       => __('신규 카카오페이', 'iamport-for-woocommerce'),
                 'description' => __('신규 카카오페이 방식으로 사용하시겠습니까? (주)카카오페이와 계약이 필요하니 사전에 확인바랍니다.', 'iamport-for-woocommerce'),
                 'type'        => 'checkbox',
                 'label'       => __('LGCNS계약 종료 후 카카오페이 계약된 경우 체크해주세요.', 'iamport-for-woocommerce'),
                 'default'     => 'yes',
-            ],
-            'onetime_mid' => [
+            ),
+            'onetime_mid' => array(
                 'title'       => __('일반결제용 CID', 'iamport-for-woocommerce'),
                 'type'        => 'text',
                 'description' => __('카카오페이 일반결제에 사용될 가맹점코드(CID)를 입력해주세요.', 'iamport-for-woocommerce'),
-            ],
-            'recurring_mid' => [
+            ),
+            'recurring_mid' => array(
                 'title'       => __('정기결제용 CID', 'iamport-for-woocommerce'),
                 'type'        => 'text',
                 'description' => __('카카오페이 정기결제에 사용될 가맹점코드(CID)를 입력해주세요.', 'iamport-for-woocommerce'),
-            ],
-        ], $this->form_fields);
+            ),
+        ), $this->form_fields);
     }
 
     public function iamport_order_detail($order_id)
@@ -233,7 +233,7 @@ class WC_Gateway_Iamport_Kakao extends Base_Gateway_Iamport
         $notice_url      = IamportHelper::get_notice_url();
 
         $iamport  = new WooIamport($creds['imp_rest_key'], $creds['imp_rest_secret']);
-        $pay_data = [
+        $pay_data = array(
             'amount'       => $total,
             'merchant_uid' => $order->get_order_key() . $order_suffix,
             'customer_uid' => $customer_uid,
@@ -241,7 +241,7 @@ class WC_Gateway_Iamport_Kakao extends Base_Gateway_Iamport
             'buyer_name'   => trim($order->get_billing_last_name() . $order->get_billing_first_name()),
             'buyer_email'  => $order->get_billing_email(),
             'buyer_tel'    => $order->get_billing_phone(),
-        ];
+        );
         if (empty($pay_data['buyer_name'])) {
             $pay_data['buyer_name'] = $this->get_default_user_name();
         }
@@ -282,7 +282,7 @@ class WC_Gateway_Iamport_Kakao extends Base_Gateway_Iamport
 
     public function is_paid_confirmed($order, $payment_data)
     {
-        add_action('iamport_post_order_completed', [$this, 'update_customer_uid'], 10, 2); //불필요하게 hook이 많이 걸리지 않도록(naver-gateway객체를 여러 군데에서 생성한다.)
+        add_action('iamport_post_order_completed', array($this, 'update_customer_uid'), 10, 2); //불필요하게 hook이 많이 걸리지 않도록(naver-gateway객체를 여러 군데에서 생성한다.)
 
         return parent::is_paid_confirmed($order, $payment_data);
     }
@@ -296,7 +296,7 @@ class WC_Gateway_Iamport_Kakao extends Base_Gateway_Iamport
     public function get_display_categories()
     {
         if (!isset($this->settings['show_button_on_categories'])) {
-            return [];
+            return array();
         }
 
         $categories = $this->settings['show_button_on_categories'];
@@ -310,7 +310,7 @@ class WC_Gateway_Iamport_Kakao extends Base_Gateway_Iamport
     public function get_disabled_categories()
     {
         if (!isset($this->settings['hide_button_on_categories'])) {
-            return [];
+            return array();
         }
 
         $categories = $this->settings['hide_button_on_categories'];
@@ -318,7 +318,7 @@ class WC_Gateway_Iamport_Kakao extends Base_Gateway_Iamport
             return 'all';
         }
         if ($categories === 'none' || in_array('none', $categories)) {
-            return [];
+            return array();
         }
 
         return $categories;
@@ -358,7 +358,7 @@ class IamportKakaoButton
 
     public function init()
     {
-        add_filter('woocommerce_available_payment_gateways', [$this, 'kakao_unset_gateway_by_category']);
+        add_filter('woocommerce_available_payment_gateways', array($this, 'kakao_unset_gateway_by_category');
     }
 
     private function all_products_in_categories($product_ids, $categories)
@@ -395,7 +395,7 @@ class IamportKakaoButton
 
         $categories          = $this->gateway->get_display_categories();
         $disabled_categories = $this->gateway->get_disabled_categories();
-        $product_ids         = [];
+        $product_ids         = array();
         $enabled             = true;
 
         foreach ($cart_items as $key => $item) {
