@@ -358,7 +358,7 @@ class IamportKakaoButton
 
     public function init()
     {
-        add_filter('woocommerce_available_payment_gateways', array($this, 'kakao_unset_gateway_by_category');
+        add_filter('woocommerce_available_payment_gateways', array($this, 'kakao_unset_gateway_by_category'));
     }
 
     private function all_products_in_categories($product_ids, $categories)
