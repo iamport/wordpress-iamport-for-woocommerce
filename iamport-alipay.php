@@ -58,7 +58,13 @@ class WC_Gateway_Iamport_Alipay extends Base_Gateway_Iamport {
 			// 	'description' => __( '결제가 가능한 화폐단위를 지정합니다. 알리페이 사용을 위해 나이스페이먼츠와 계약시, 결제/정산 화폐가 지정되니 맞춰서 설정해주세요. (주문 건의 화폐단위와 일치하는 경우 결제수단으로 노출됩니다.)', 'iamport-for-woocommerce' ),
 			// 	'default' => __( 'KRW', 'iamport-for-woocommerce' )
 			// ),
-		), $this->form_fields);
+		), $this->form_fields, array(
+		    'manual_pg_id' => array(
+                'title' => __( '알리페이 결제수단 제공 PG설정', 'woocommerce' ),
+                'type' => 'text',
+                'description' => __( '알리페이 결제수단을 실제 적용할 PG사에 해당되는 정보를 직접 수동설정하실 수 있습니다. "{PG사 코드}.{PG상점아이디}" 의 형식으로 입력하실 수 있습니다. (예시 : alipay.IM_xxxx, kcp.IP123)', 'iamport-for-woocommerce' ),
+            ),
+        ));
 	}
 
 	public function iamport_order_detail( $order_id ) {
@@ -95,6 +101,17 @@ class WC_Gateway_Iamport_Alipay extends Base_Gateway_Iamport {
 		$response = parent::iamport_payment_info($order_id);
 		$response['pg'] = 'alipay';
 		// $response['currency'] = isset($this->settings['currency']) ? $this->settings['currency'] : 'KRW';
+
+		$manualPgString = trim($this->settings['manual_pg_id']);
+        if ($manualPgString) {
+            $response['pg'] = $manualPgString;
+            $manualPg = explode('.', $manualPgString);
+
+            $pgProvider = $manualPg[0];
+            if ($pgProvider != 'alipay') { // Alipay 직접계약 외 PG사를 통한 HUB형 Alipay
+                $response['pay_method'] = 'alipay';
+            }
+        }
 
 		return $response;
 	}
