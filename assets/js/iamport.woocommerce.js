@@ -212,7 +212,7 @@ jQuery(function($) {
 						}
 
 						//[2020-09-25] eximbay 결제수단 지정
-						if (result.iamport.pg == 'eximbay' && req_param.pay_method=='eximbay') {
+						if (result.iamport.pg == 'eximbay') {
 							var eximbay_pay_method = $form.find('#iamport_eximbay-pay-method').val();
 							req_param.pay_method = eximbay_pay_method;
 							if (eximbay_pay_method == 'econtext' && req_param.currency != 'JPY') {
@@ -353,7 +353,7 @@ jQuery(function($) {
 						}
 
 						//[2020-09-25] eximbay 결제수단 지정
-						if (result.iamport.pg == 'eximbay' && req_param.pay_method=='eximbay') {
+						if (result.iamport.pg == 'eximbay') {
 							req_param.pay_method = $form.find('#iamport_eximbay-pay-method').val();
 						}
 

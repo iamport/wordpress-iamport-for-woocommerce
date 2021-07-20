@@ -117,13 +117,7 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
         'type' => 'text',
         'default' => "",
       )
-    ), $this->form_fields, array(
-      'manual_pg_id' => array(
-              'title' => __( '네이버페이(결제형) 결제수단 제공 PG설정', 'woocommerce' ),
-              'type' => 'text',
-              'description' => __( '네이버페이(결제형) 결제수단을 실제 적용할 PG사에 해당되는 정보를 직접 수동설정하실 수 있습니다. "{PG사 코드}.{PG상점아이디}" 의 형식으로 입력하실 수 있습니다. (예시 : naverpay.IM_xxxx, kcp.IP123)', 'iamport-for-woocommerce' ),
-          ),
-      ));
+    ), $this->form_fields);
   }
 
   public static function render_edit_product_category( $tag ) {
@@ -247,17 +241,6 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
 
     if ( !wp_is_mobile() ) {
         $response["naverPopupMode"] = true;
-    }
-
-    $manualPgString = trim($this->settings['manual_pg_id']);
-    if ($manualPgString) {
-        $response['pg'] = $manualPgString;
-        $manualPg = explode('.', $manualPgString);
-
-        $pgProvider = $manualPg[0];
-        if ($pgProvider != 'naverpay') { // 네이버페이(결제형) 직접계약 외 PG사를 통한 HUB형 네이버페이(결제형)
-            $response['pay_method'] = 'naverpay';
-        }
     }
 
     return $response;
