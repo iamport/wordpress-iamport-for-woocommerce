@@ -19,7 +19,8 @@ class WC_Gateway_Iamport_Kakao extends Base_Gateway_Iamport {
 		//actions
 		// add_action( 'woocommerce_thankyou_'.$this->id, array( $this, 'iamport_order_detail' ) ); woocommerce_order_details_after_order_table 로 대체. 중복으로 나오고 있음
 
-		add_action( 'woocommerce_scheduled_subscription_payment_' . $this->id, array( $this, 'scheduled_subscription_payment' ), 10, 2 );
+        add_action( 'woocommerce_scheduled_subscription_payment_' . $this->id, array( $this, 'scheduled_subscription_payment' ), 10, 2 );
+        $this->init();
 	}
 
 	protected function get_gateway_id() {
@@ -314,15 +315,6 @@ class WC_Gateway_Iamport_Kakao extends Base_Gateway_Iamport {
 		return function_exists( 'wcs_order_contains_subscription' ) && ( wcs_order_contains_subscription( $order_id ) || wcs_is_subscription( $order_id ) || wcs_order_contains_renewal( $order_id ) );
 	}
 
-}
-
-class IamportKakaoButton {
-	private $gateway;
-
-	public function __construct($gateway) {
-		$this->gateway = $gateway;
-	}
-
 	public function init() {
         add_filter( 'woocommerce_available_payment_gateways', array($this, 'kakao_unset_gateway_by_category'));
     }
@@ -347,8 +339,8 @@ class IamportKakaoButton {
         $cart_items = WC()->cart->get_cart();
         if ( count($cart_items) == 0 )	return; //장바구니가 비어있으면 패스
 
-        $categories = $this->gateway->get_display_categories();
-        $disabled_categories = $this->gateway->get_disabled_categories();
+        $categories = $this->get_display_categories();
+        $disabled_categories = $this->get_disabled_categories();
         $product_ids = array();
         $enabled = true;
 
@@ -368,11 +360,3 @@ class IamportKakaoButton {
         return $available_gateways;
     }
 }
-
-add_action( 'init', function() {
-	$gateway = new WC_Gateway_Iamport_Kakao(); //TODO : 더 좋은 방법을 고민해야 함
-
-	$instPayButton = new IamportKakaoButton($gateway);
-
-	$instPayButton->init();
-});
