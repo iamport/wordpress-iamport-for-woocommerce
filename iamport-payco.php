@@ -50,7 +50,7 @@ class WC_Gateway_Iamport_Payco extends Base_Gateway_Iamport {
 			'use_manual_pg' => array(
                 'title' => __( 'PG설정 구매자 선택방식 사용', 'woocommerce' ),
                 'type' => 'checkbox',
-                'description' => __( '아임포트 계정에 설정된 여러 PG사 / MID를 사용자의 선택에 따라 적용하는 기능을 활성화합니다. 신용카드 결제수단 선택 시, 세부 결제수단 선택창이 추가로 출력됩니다.', 'iamport-for-woocommerce' ),
+                'description' => __( '아임포트 계정에 설정된 여러 PG사 / MID를 사용자의 선택에 따라 적용하는 기능을 활성화합니다. Payco 결제수단 선택 시, 세부 결제수단 선택창이 추가로 출력됩니다.', 'iamport-for-woocommerce' ),
                 'default' => 'no',
             ),
             'manual_pg_id' => array(
