@@ -222,7 +222,6 @@ jQuery(function($) {
 								return;
 							}
 						}
-
 						IMP.init(result.iamport.user_code);
 
 						//UI unblock
@@ -356,7 +355,6 @@ jQuery(function($) {
 						if (result.iamport.pg == 'eximbay' && req_param.pay_method=='eximbay') {
 							req_param.pay_method = $form.find('#iamport_eximbay-pay-method').val();
 						}
-
 						IMP.init(result.iamport.user_code);
 
 						//UI unblock

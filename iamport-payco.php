@@ -47,10 +47,16 @@ class WC_Gateway_Iamport_Payco extends Base_Gateway_Iamport {
 				'default' => __( '주문확정 버튼을 클릭하시면 PAYCO 결제창이 나타나 결제를 진행하실 수 있습니다.', 'iamport-for-woocommerce' )
 			),
 		), $this->form_fields, array(
-		    'manual_pg_id' => array(
-                'title' => __( 'PAYCO결제수단 제공 PG설정', 'woocommerce' ),
-                'type' => 'text',
-                'description' => __( 'PAYCO결제수단을 실제 적용할 PG사에 해당되는 정보를 직접 수동설정하실 수 있습니다. "{PG사 코드}.{PG상점아이디}" 의 형식으로 입력하실 수 있습니다. (예시 : payco.IM_xxxx, kcp.IP123)', 'iamport-for-woocommerce' ),
+			'use_manual_pg' => array(
+                'title' => __( 'PG설정 구매자 선택방식 사용', 'woocommerce' ),
+                'type' => 'checkbox',
+                'description' => __( '아임포트 계정에 설정된 여러 PG사 / MID를 사용자의 선택에 따라 적용하는 기능을 활성화합니다. 신용카드 결제수단 선택 시, 세부 결제수단 선택창이 추가로 출력됩니다.', 'iamport-for-woocommerce' ),
+                'default' => 'no',
+            ),
+            'manual_pg_id' => array(
+                'title' => __( 'PG설정 구매자 선택', 'woocommerce' ),
+                'type' => 'textarea',
+                'description' => __( '"{PG사 코드}.{PG상점아이디} : 구매자에게 표시할 텍스트" 의 형식으로 여러 줄 입력가능합니다.', 'iamport-for-woocommerce' ),
             ),
         ));
 	}
@@ -81,23 +87,23 @@ class WC_Gateway_Iamport_Payco extends Base_Gateway_Iamport {
 	}
 
 	public function iamport_payment_info( $order_id ) {
+		
 		$response = parent::iamport_payment_info($order_id);
-		$response['pg'] = 'payco';
-		$response['pay_method'] = 'card'; //gateway ID가 iamport_payco로 돼있어서 기본적으로 pay_method : payco 적용되는 프론트 이슈 대응
-
-		//manual_pg_id
-        $manualPgString = trim($this->settings['manual_pg_id']);
-        if ($manualPgString) {
-            $response['pg'] = $manualPgString;
-            $manualPg = explode('.', $manualPgString);
-
-            $pgProvider = $manualPg[0];
-            if ($pgProvider != 'payco') { //PAYCO직접계약 외 PG사를 통한 HUB형 PAYCO
-                $response['pay_method'] = 'payco';
-            }
-        }
-
+		$useManualPg = filter_var($this->settings['use_manual_pg'], FILTER_VALIDATE_BOOLEAN);
+		if(!$useManualPg){
+			$response['pg'] = 'payco';
+			$response['pay_method'] = 'payco'; //gateway ID가 iamport_payco로 돼있어서 기본적으로 pay_method : payco 적용되는 프론트 이슈 대응
+		}
 		return $response;
 	}
 
+	public function payment_fields()
+    {
+        parent::payment_fields(); //description 출력
+
+        $useManualPg = filter_var($this->settings['use_manual_pg'], FILTER_VALIDATE_BOOLEAN);
+        if ($useManualPg) {
+            echo IamportHelper::htmlSecondaryPaymentMethod($this->settings['manual_pg_id']);
+        }
+    }
 }
