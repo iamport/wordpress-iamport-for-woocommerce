@@ -259,19 +259,21 @@ if (!class_exists('IamportHelper')) {
                     $pgOptions[$pgId] = $label;
                 }
             }
-
-            if (!empty($pgOptions)) {
-                ob_start(); ?>
-                <select class="iamport_payment_method_secondary">
-                    <? foreach($pgOptions as $key=>$label) : ?>
-                        <option value="<?=$key?>"><?=$label?></option>
-                    <? endforeach; ?>
-                </select>
-                <?php
-                return ob_get_clean();
+            if (empty($pgOptions)) {
+                return '';
             }
 
-            return '';
+            $uniquePG = count($pgOptions)==1; // only one pg => don't show dropdown
+            
+            ob_start(); ?>
+            <select class="iamport_payment_method_secondary" style="display :<?=$uniquePG?"none":""?>">
+                <?php foreach($pgOptions as $key=>$label) : ?>
+                    <option value="<?=$key?>" <?=$uniquePG?"selected":""?>><?=$label?></option>
+                <?php endforeach; ?>
+            </select>
+            <?php
+            return ob_get_clean();
+
         }
 
         public static function getCustomStatuses()
