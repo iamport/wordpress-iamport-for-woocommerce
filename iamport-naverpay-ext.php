@@ -50,7 +50,7 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
     $this->method_title = __( '아임포트(결제형-네이버페이)', 'iamport-for-woocommerce' );
     $this->method_description = __( '<b>네이버페이 정책상, 결제형-네이버페이는 사전 승인된 일부 가맹점에 한하여 제공되고 있으며 일반적으로는 "아임포트(네이버페이)"를 사용해주셔야 합니다. 결제형-네이버페이 가입기준에 대해서는 아임포트 고객센터(1670-5176)으로 문의 부탁드립니다.</b>', 'iamport-for-woocommerce' );
     $this->has_fields = true;
-    $this->supports = array( 'products', 'refunds' );
+		$this->supports = array( 'products', 'refunds', 'subscriptions', 'subscription_reactivation'/*이것이 있어야 subscription 후 active상태로 들어갈 수 있음*/, 'subscription_suspension', 'subscription_cancellation', 'subscription_date_changes', 'subscription_amount_changes', 'subscription_payment_method_change_customer', 'multiple_subscriptions' );
 
     $this->title = $this->settings['title'];
     $this->description = $this->settings['description'];
