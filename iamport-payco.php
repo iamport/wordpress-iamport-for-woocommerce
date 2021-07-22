@@ -92,7 +92,7 @@ class WC_Gateway_Iamport_Payco extends Base_Gateway_Iamport {
 		$useManualPg = filter_var($this->settings['use_manual_pg'], FILTER_VALIDATE_BOOLEAN);
 		if(!$useManualPg){
 			$response['pg'] = 'payco';
-			$response['pay_method'] = 'payco'; //gateway ID가 iamport_payco로 돼있어서 기본적으로 pay_method : payco 적용되는 프론트 이슈 대응
+			$response['pay_method'] = 'card'; //gateway ID가 iamport_payco로 돼있어서 기본적으로 pay_method : payco 적용되는 프론트 이슈 대응
 		}
 		return $response;
 	}

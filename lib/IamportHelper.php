@@ -263,13 +263,13 @@ if (!class_exists('IamportHelper')) {
                 return '';
             }
 
-            $uniquePG = count($pgOptions)==1?true:false; // only one pg => don't show dropdown
+            $uniquePG = count($pgOptions)==1; // only one pg => don't show dropdown
             
             ob_start(); ?>
             <select class="iamport_payment_method_secondary" style="display :<?=$uniquePG?"none":""?>">
-                <? foreach($pgOptions as $key=>$label) : ?>
+                <?php foreach($pgOptions as $key=>$label) : ?>
                     <option value="<?=$key?>" <?=$uniquePG?"selected":""?>><?=$label?></option>
-                <? endforeach; ?>
+                <?php endforeach; ?>
             </select>
             <?php
             return ob_get_clean();
