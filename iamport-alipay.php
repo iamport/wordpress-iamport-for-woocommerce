@@ -58,7 +58,19 @@ class WC_Gateway_Iamport_Alipay extends Base_Gateway_Iamport {
 			// 	'description' => __( '결제가 가능한 화폐단위를 지정합니다. 알리페이 사용을 위해 나이스페이먼츠와 계약시, 결제/정산 화폐가 지정되니 맞춰서 설정해주세요. (주문 건의 화폐단위와 일치하는 경우 결제수단으로 노출됩니다.)', 'iamport-for-woocommerce' ),
 			// 	'default' => __( 'KRW', 'iamport-for-woocommerce' )
 			// ),
-		), $this->form_fields);
+		), $this->form_fields, array(
+			'use_manual_pg' => array(
+                'title' => __( 'PG설정 구매자 선택방식 사용', 'woocommerce' ),
+                'type' => 'checkbox',
+                'description' => __( '아임포트 계정에 설정된 여러 PG사 / MID를 사용자의 선택에 따라 적용하는 기능을 활성화합니다. 알리페이 결제수단 선택 시, 세부 결제수단 선택창이 추가로 출력됩니다.', 'iamport-for-woocommerce' ),
+                'default' => 'no',
+            ),
+            'manual_pg_id' => array(
+                'title' => __( 'PG설정 구매자 선택', 'woocommerce' ),
+                'type' => 'textarea',
+                'description' => __( '"{PG사 코드}.{PG상점아이디} : 구매자에게 표시할 텍스트" 의 형식으로 여러 줄 입력가능합니다.', 'iamport-for-woocommerce' ),
+            ),
+        ));
 	}
 
 	public function iamport_order_detail( $order_id ) {
@@ -93,10 +105,21 @@ class WC_Gateway_Iamport_Alipay extends Base_Gateway_Iamport {
 		require_once(dirname(__FILE__).'/lib/IamportHelper.php');
 
 		$response = parent::iamport_payment_info($order_id);
-		$response['pg'] = 'alipay';
-		// $response['currency'] = isset($this->settings['currency']) ? $this->settings['currency'] : 'KRW';
-
+		$useManualPg = filter_var($this->settings['use_manual_pg'], FILTER_VALIDATE_BOOLEAN);
+		if(!$useManualPg){
+			$response['pg'] = 'alipay';
+			// $response['currency'] = isset($this->settings['currency']) ? $this->settings['currency'] : 'KRW';
+		}
 		return $response;
 	}
+	
+	public function payment_fields()
+    {
+        parent::payment_fields(); //description 출력
 
+        $useManualPg = filter_var($this->settings['use_manual_pg'], FILTER_VALIDATE_BOOLEAN);
+        if ($useManualPg) {
+            echo IamportHelper::htmlSecondaryPaymentMethod($this->settings['manual_pg_id']);
+        }
+    }
 }

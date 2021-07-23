@@ -120,7 +120,7 @@ jQuery(function($) {
 		if ( gateway_name.indexOf(prefix) == 0 )	pay_method = gateway_name.substring(prefix.length);
 
 		//카카오페이 처리
-		if ( pay_method == 'kakao' )				pay_method = 'card';
+		//if ( pay_method == 'kakao' )				pay_method = 'card';
 		//삼성페이 처리
 		/*
 		if ( pay_method == 'samsung' && !isSamsungPayRunnable() ) {
