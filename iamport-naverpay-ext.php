@@ -257,6 +257,15 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
     if ( !wp_is_mobile() ) {
         $response["naverPopupMode"] = true;
     }
+    if ( $this->has_subscription($order_id) ) { //정기결제
+
+      //customer_uid를 생성해서 js에 전달 및 post_meta에 미리 저장해둠
+      $order = new WC_Order( $order_id );
+      $customer_uid = IamportHelper::get_customer_uid($order);
+
+      $this->_iamport_post_meta($order_id, '_customer_uid_reserved', $customer_uid); //post meta에 저장(예비용 customer_uid. 아직 빌링키까지 등록안됐으므로)
+      $response['customer_uid'] = $customer_uid; //js에 전달
+    }
 
     if ($useManualPg) {
       $response['pay_method'] = 'naverpay';
