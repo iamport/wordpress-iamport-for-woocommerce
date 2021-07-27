@@ -134,26 +134,28 @@ class WC_Gateway_Iamport_Kakao extends Base_Gateway_Iamport {
 
 		$response = parent::iamport_payment_info($order_id);
 		$useManualPg = filter_var($this->settings['use_manual_pg'], FILTER_VALIDATE_BOOLEAN);
-		if(!$useManualPg){
-			if ( $this->use_new_version === "yes" ) {
-				$response['pg'] = 'kakaopay';
+		$response['pay_method'] = 'card'; // default setting
+		if ( $this->use_new_version === "yes" ) {
+			if ( $useManualPg ) $response['pay_method'] = 'kakaopay';
+			else $response['pg'] = 'kakaopay';
 
-				if ( $this->has_subscription($order_id) ) { //정기결제
-					if ( $this->settings["recurring_mid"] )	$response["pg"] = sprintf("%s.%s", $response["pg"], $this->settings["recurring_mid"]);
+			if ( $this->has_subscription($order_id) ) { //정기결제
+				if ( $this->settings["recurring_mid"] )	$response["pg"] = sprintf("%s.%s", $response["pg"], $this->settings["recurring_mid"]);
 
-					//customer_uid를 생성해서 js에 전달 및 post_meta에 미리 저장해둠
-					$order = new WC_Order( $order_id );
-					$customer_uid = IamportHelper::get_customer_uid($order);
+				//customer_uid를 생성해서 js에 전달 및 post_meta에 미리 저장해둠
+				$order = new WC_Order( $order_id );
+				$customer_uid = IamportHelper::get_customer_uid($order);
 
-					$this->_iamport_post_meta($order_id, '_customer_uid_reserved', $customer_uid); //post meta에 저장(예비용 customer_uid. 아직 빌링키까지 등록안됐으므로)
-					$response['customer_uid'] = $customer_uid; //js에 전달
-				} else { //1회 결제
-					if ( $this->settings["onetime_mid"] )		$response["pg"] = sprintf("%s.%s", $response["pg"], $this->settings["onetime_mid"]);
-				}
-			} else {
-				$response['pg'] = 'kakao';
+				$this->_iamport_post_meta($order_id, '_customer_uid_reserved', $customer_uid); //post meta에 저장(예비용 customer_uid. 아직 빌링키까지 등록안됐으므로)
+				$response['customer_uid'] = $customer_uid; //js에 전달
+			} else { //1회 결제
+				if ( $this->settings["onetime_mid"] )		$response["pg"] = sprintf("%s.%s", $response["pg"], $this->settings["onetime_mid"]);
 			}
+		} else {
+			if ( $useManualPg ) $response['pay_method'] = 'kakao';
+			else $response['pg'] = 'kakao';
 		}
+		
 		return $response;
 	}
 
