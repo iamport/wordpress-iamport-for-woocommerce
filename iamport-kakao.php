@@ -83,7 +83,19 @@ class WC_Gateway_Iamport_Kakao extends Base_Gateway_Iamport {
 				'type' => 'text',
 				'description' => __( '카카오페이 정기결제에 사용될 가맹점코드(CID)를 입력해주세요.', 'iamport-for-woocommerce' ),
 			),
-		), $this->form_fields);
+		), $this->form_fields, array(
+			'use_manual_pg' => array(
+                'title' => __( 'PG설정 구매자 선택방식 사용', 'woocommerce' ),
+                'type' => 'checkbox',
+                'description' => __( '(신규 카카오페이 버전에서만 사용가능) 아임포트 계정에 설정된 여러 PG사 / MID를 사용자의 선택에 따라 적용하는 기능을 활성화합니다. 카카오페이 결제수단 선택 시, 세부 결제수단 선택창이 추가로 출력됩니다.', 'iamport-for-woocommerce' ),
+                'default' => 'no',
+            ),
+            'manual_pg_id' => array(
+                'title' => __( 'PG설정 구매자 선택', 'woocommerce' ),
+                'type' => 'textarea',
+                'description' => __( '"{PG사 코드}.{PG상점아이디} : 구매자에게 표시할 텍스트" 의 형식으로 여러 줄 입력가능합니다.', 'iamport-for-woocommerce' ),
+            ),
+        ));
 	}
 
 	public function iamport_order_detail( $order_id ) {
@@ -121,10 +133,11 @@ class WC_Gateway_Iamport_Kakao extends Base_Gateway_Iamport {
 		require_once(dirname(__FILE__).'/lib/IamportHelper.php');
 
 		$response = parent::iamport_payment_info($order_id);
-
-		if ( $this->use_new_version === "yes" ) {
+		$useNewVersion = $this->use_new_version === "yes";
+		$useManualPg = filter_var($this->settings['use_manual_pg'], FILTER_VALIDATE_BOOLEAN);
+		
+		if ( $useNewVersion ) {
 			$response['pg'] = 'kakaopay';
-
 			if ( $this->has_subscription($order_id) ) { //정기결제
 				if ( $this->settings["recurring_mid"] )	$response["pg"] = sprintf("%s.%s", $response["pg"], $this->settings["recurring_mid"]);
 
@@ -141,8 +154,22 @@ class WC_Gateway_Iamport_Kakao extends Base_Gateway_Iamport {
 			$response['pg'] = 'kakao';
 		}
 
+		$response['pay_method'] = $useNewVersion & $useManualPg ? 'kakaopay' : 'card';
+		
 		return $response;
 	}
+
+	public function payment_fields()
+    {
+        parent::payment_fields(); //description 출력
+
+        $useManualPg = filter_var($this->settings['use_manual_pg'], FILTER_VALIDATE_BOOLEAN);
+		$useNewVersion = $this->use_new_version === "yes";
+
+        if ($useManualPg && $useNewVersion) {
+            echo IamportHelper::htmlSecondaryPaymentMethod($this->settings['manual_pg_id']);
+        }
+    }
 
 	public function scheduled_subscription_payment( $amount_to_charge, $renewal_order ) {
 		require_once(dirname(__FILE__).'/lib/IamportHelper.php');
