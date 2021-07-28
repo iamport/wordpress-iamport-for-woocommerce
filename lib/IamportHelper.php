@@ -14,6 +14,11 @@ if (!class_exists('IamportHelper')) {
 
         public static function get_customer_uid($order)
         {
+            $customer_uid = get_user_meta($order->get_user_id(), 'customer_uid', true);
+            if(!empty($customer_uid)){
+                return $customer_uid;
+            }
+            
             $prefix = get_option('_iamport_customer_prefix');
             if (empty($prefix)) {
                 require_once(ABSPATH . 'wp-includes/class-phpass.php');
