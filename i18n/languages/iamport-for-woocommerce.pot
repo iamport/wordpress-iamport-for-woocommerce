@@ -506,3 +506,7 @@ msgstr ""
 #: plugin_src/iamport-vbank.php:174
 msgid "아래의 가상계좌로 입금해주셔야 최종적으로 주문이 완료처리됩니다."
 msgstr ""
+
+#: plugin_src/iamport-eximbay.php:63
+msgid "일본편의점결제"
+msgstr ""
