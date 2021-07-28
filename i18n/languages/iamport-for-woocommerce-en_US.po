@@ -553,3 +553,7 @@ msgid "아래의 가상계좌로 입금해주셔야 최종적으로 주문이 �
 msgstr ""
 "You'll have to credit account the Deposit only bank account, ultimately "
 "completed orders are processed."
+
+#: plugin_src/iamport-eximbay.php:45
+msgid "일본편의점결제"
+msgstr "Japanese CVS payment"
