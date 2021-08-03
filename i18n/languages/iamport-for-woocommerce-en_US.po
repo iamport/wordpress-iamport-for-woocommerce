@@ -555,5 +555,5 @@ msgstr ""
 "completed orders are processed."
 
 #: plugin_src/iamport-eximbay.php:45
-msgid "일본편의점결제"
-msgstr "Japanese CVS payment"
+msgid "EContext(일본편의점결제)"
+msgstr "EContext(Japanese CVS payment)"

@@ -19,5 +19,5 @@ msgstr ""
 "Language: ja\n"
 
 #: plugin_src/iamport-eximbay.php:45
-msgid "일본편의점결제"
-msgstr "日本コンビニ決済"
+msgid "EContext(일본편의점결제)"
+msgstr "コンビニ・銀行払い"
