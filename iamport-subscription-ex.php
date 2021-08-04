@@ -102,7 +102,7 @@ class WC_Gateway_Iamport_Subscription_Ex extends Base_Gateway_Iamport {
 
 		//customer_uid를 생성해서 js에 전달 및 post_meta에 미리 저장해둠
 		$order = new WC_Order( $order_id );
-		$customer_uid = $this->get_customer_uid($order);
+		$customer_uid = IamportHelper::get_customer_uid($order);
 
 		if ( !$this->isEmptyProvider() && !empty($this->pg_id) ) $iamport_info['pg'] = $this->pg_provider.'.'.$this->pg_id; //TODO : [2019-08-12] 왜 pg_id까지 체크하지...
 		$iamport_info['customer_uid'] = $customer_uid; //js에 전달
@@ -449,7 +449,7 @@ class WC_Gateway_Iamport_Subscription_Ex extends Base_Gateway_Iamport {
 
 		error_log('######## SCHEDULED ########');
 		$creds = $this->getRestInfo(null, false); //this->imp_rest_key, this->imp_rest_secret사용하도록
-		$customer_uid = $this->get_customer_uid( $renewal_order );
+		$customer_uid = IamportHelper::get_customer_uid( $renewal_order );
 		$response = $this->doPayment($creds, $renewal_order, $amount_to_charge, $customer_uid, $renewal_order->suspension_count );
 
 		if ( is_wp_error( $response ) ) {
@@ -597,22 +597,6 @@ class WC_Gateway_Iamport_Subscription_Ex extends Base_Gateway_Iamport {
 		$order_name = apply_filters('iamport_recurring_order_name', $order_name, $order, $initial_payment);
 
 		return $order_name;
-	}
-
-	private function get_customer_uid($order) {
-		$prefix = get_option('_iamport_customer_prefix');
-		if ( empty($prefix) ) {
-			require_once( ABSPATH . 'wp-includes/class-phpass.php');
-			$hasher = new PasswordHash( 8, false );
-			$prefix = md5( $hasher->get_random_bytes( 32 ) );
-
-			if ( !add_option( '_iamport_customer_prefix', $prefix ) )	throw new Exception( __( "정기결제 구매자정보 생성에 실패하였습니다.", 'iamport-for-woocommerce' ), 1);
-		}
-
-		$user_id = $order->get_user_id(); // wp_cron에서는 get_current_user_id()가 없다.
-		if ( empty($user_id) )		throw new Exception( __( "정기결제기능은 로그인된 사용자만 사용하실 수 있습니다.", 'iamport-for-woocommerce' ), 1);
-
-		return $prefix . 'c' . $user_id;
 	}
 
 	private function isEmptyProvider() {
