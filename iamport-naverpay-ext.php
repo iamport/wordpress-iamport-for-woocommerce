@@ -117,18 +117,6 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
         'type' => 'text',
         'default' => "",
       ),
-      'need_cfm' => array(
-        'title' => __( '결제 완료일 기준 사용', 'iamport-for-woocommerce'),
-        'label' => __( '결제 완료일 기준 사용', 'iamport-for-woocommerce'),
-        'type' => 'checkbox',
-        'default' => 'yes',
-        'description' => __( '결제 완료일을 설정하려는 경우에 체크해주세요.')
-      ),
-      'add_cfm_days' => array(
-        'title' => __( '추가 이용완료일 수 설정', 'iamport-for-woocommerce' ),
-        'type' => 'text',
-        'description' => __( '추가 이용완료일 수를 입력해주세요.', 'iamport-for-woocommerce' ),
-      ),
     ), $this->form_fields, array(
         'use_manual_pg' => array(
             'title' => __( 'PG설정 구매자 선택방식 사용', 'woocommerce' ),
@@ -272,11 +260,6 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
     $response['pay_method'] = 'naverpay';
     if (!$useManualPg) {
       $response['pg'] = 'naverpay';
-    }
-    if ($this->settings['need_cfm']=="yes"){
-      $add_date = "+" . $this->settings['add_cfm_days'] . " days";
-      $date = new DateTime($add_date);
-      $response['naverUseCfm'] = $date->format('Ymd');
     }
 
     return $response;
