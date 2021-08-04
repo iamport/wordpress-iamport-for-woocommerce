@@ -117,10 +117,17 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
         'type' => 'text',
         'default' => "",
       ),
-      'naverUseCfm' => array(
-        'title' => __( '이용완료일 설정', 'iamport-for-woocommerce' ),
+      'need_cfm' => array(
+        'title' => __( '결제 완료일 기준 사용', 'iamport-for-woocommerce'),
+        'label' => __( '결제 완료일 기준 사용', 'iamport-for-woocommerce'),
+        'type' => 'checkbox',
+        'default' => 'yes',
+        'description' => __( '결제 완료일을 설정하려는 경우에 체크해주세요.')
+      ),
+      'add_cfm_days' => array(
+        'title' => __( '추가 이용완료일 수 설정', 'iamport-for-woocommerce' ),
         'type' => 'text',
-        'description' => __( '이용완료일을 입력해주세요. (yyyyMMdd) 과거 일자를 넣을 수 없으며 오늘 날짜는 가능합니다.', 'iamport-for-woocommerce' ),
+        'description' => __( '추가 이용완료일 수를 입력해주세요.', 'iamport-for-woocommerce' ),
       ),
     ), $this->form_fields, array(
         'use_manual_pg' => array(
@@ -266,8 +273,10 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
     if (!$useManualPg) {
       $response['pg'] = 'naverpay';
     }
-    if ($this->settings['naverUseCfm']){
-      $response['naverUseCfm'] = $this->settings['naverUseCfm'];
+    if ($this->settings['need_cfm']=="yes"){
+      $add_date = "+" . $this->settings['add_cfm_days'] . " days";
+      $date = new DateTime($add_date);
+      $response['naverUseCfm'] = $date->format('Ymd');
     }
 
     return $response;
