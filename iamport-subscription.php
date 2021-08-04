@@ -334,7 +334,7 @@ class WC_Gateway_Iamport_Subscription extends WC_Payment_Gateway {
 			require_once(dirname(__FILE__).'/lib/iamport.php');
 
 			$customer_uid 	 = null;
-			if ( !$initial_payment || $subscribe_able ) $customer_uid 	 = $this->get_customer_uid($order);
+			if ( !$initial_payment || $subscribe_able ) $customer_uid 	 = IamportHelper::get_customer_uid($order);
 
 			$tax_free_amount = IamportHelper::get_tax_free_amount($order);
 
@@ -495,7 +495,7 @@ class WC_Gateway_Iamport_Subscription extends WC_Payment_Gateway {
 		require_once(dirname(__FILE__).'/lib/iamport.php');
 
 		$order_id = $order->get_id();
-		$customer_uid = $this->get_customer_uid($order);
+		$customer_uid = IamportHelper::get_customer_uid($order);
 
 		$cardInfo = $this->getDecryptedCard();
 		if ( is_wp_error($cardInfo) )	return $cardInfo; //return WP_Error
@@ -725,22 +725,6 @@ class WC_Gateway_Iamport_Subscription extends WC_Payment_Gateway {
 		$order_name = apply_filters('iamport_recurring_order_name', $order_name, $order, $initial_payment);
 
 		return $order_name;
-	}
-
-	private function get_customer_uid($order) {
-		$prefix = get_option('_iamport_customer_prefix');
-		if ( empty($prefix) ) {
-			require_once( ABSPATH . 'wp-includes/class-phpass.php');
-			$hasher = new PasswordHash( 8, false );
-			$prefix = md5( $hasher->get_random_bytes( 32 ) );
-
-			if ( !add_option( '_iamport_customer_prefix', $prefix ) )	throw new Exception( __( "정기결제 구매자정보 생성에 실패하였습니다.", 'iamport-for-woocommerce' ), 1);
-		}
-
-		$user_id = $order->get_user_id(); // wp_cron에서는 get_current_user_id()가 없다.
-		if ( empty($user_id) )		throw new Exception( __( "정기결제기능은 로그인된 사용자만 사용하실 수 있습니다.", 'iamport-for-woocommerce' ), 1);
-
-		return $prefix . 'c' . $user_id;
 	}
 
 	protected function _iamport_post_meta($order_id, $meta_key, $meta_value) {
