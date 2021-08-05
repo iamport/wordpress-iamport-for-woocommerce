@@ -116,8 +116,20 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
         'description' => __( '네이버페이 검수단계에서는 특정 사용자에게만 네이버페이 결제수단을 노출합니다. (콤마로 구분하여 여러 명 지정 가능)', 'iamport-for-woocommerce' ),
         'type' => 'text',
         'default' => "",
-      )
-    ), $this->form_fields);
+      ),
+    ), $this->form_fields, array(
+        'use_manual_pg' => array(
+            'title' => __( 'PG설정 구매자 선택방식 사용', 'woocommerce' ),
+            'type' => 'checkbox',
+            'description' => __( '아임포트 계정에 설정된 여러 PG사 / MID를 사용자의 선택에 따라 적용하는 기능을 활성화합니다. 네이버페이(결제형) 결제수단 선택 시, 세부 결제수단 선택창이 추가로 출력됩니다.', 'iamport-for-woocommerce' ),
+            'default' => 'no',
+        ),
+        'manual_pg_id' => array(
+            'title' => __( 'PG설정 구매자 선택', 'woocommerce' ),
+            'type' => 'textarea',
+            'description' => __( '"{PG사 코드}.{PG상점아이디} : 구매자에게 표시할 텍스트" 의 형식으로 여러 줄 입력가능합니다.', 'iamport-for-woocommerce' ),
+        ),
+    ));
   }
 
   public static function render_edit_product_category( $tag ) {
@@ -221,6 +233,7 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
     $order = new WC_Order( $order_id );
     //naverProducts 생성
 
+    $useManualPg = filter_var($this->settings['use_manual_pg'], FILTER_VALIDATE_BOOLEAN);
     $naverProducts = array();
     $product_items = $order->get_items(); //array of WC_Order_Item_Product
     foreach ($product_items as $item) {
@@ -235,7 +248,6 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
       );
     }
 
-    $response["pg"] = "naverpay";
     $response["naverProducts"] = $naverProducts;
     $response["unblock"] = true;
 
@@ -243,7 +255,25 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
         $response["naverPopupMode"] = true;
     }
 
+    if ($useManualPg) {
+      $response['pay_method'] = 'naverpay';
+    }
+    else {
+      $response['pg'] = 'naverpay';
+      $response['pay_method'] = 'card';
+    }
+
     return $response;
+  }
+
+  public function payment_fields()
+  {
+      parent::payment_fields(); //description 출력
+
+      $useManualPg = filter_var($this->settings['use_manual_pg'], FILTER_VALIDATE_BOOLEAN);
+      if ($useManualPg) {
+          echo IamportHelper::htmlSecondaryPaymentMethod($this->settings['manual_pg_id']);
+      }
   }
 
   protected function get_order_name($order) { // "XXX 외 1건" 같이 외 1건이 붙으면 안됨
