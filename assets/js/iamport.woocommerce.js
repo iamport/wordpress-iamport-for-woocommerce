@@ -199,7 +199,6 @@ jQuery(function($) {
 						if ( result.iamport.kcpProducts )			req_param.kcpProducts = result.iamport.kcpProducts;
 						if ( result.iamport.naverPopupMode )         req_param.naverPopupMode = true;
 						if ( result.iamport.naverProducts )   req_param.naverProducts = result.iamport.naverProducts;
-						if ( result.iamport.naverUseCfm )	  req_param.naverUseCfm = result.iamport.naverUseCfm;
 						if ( result.iamport.notice_url )      req_param.notice_url = result.iamport.notice_url;
 						if ( result.iamport.period )          req_param.period = result.iamport.period;
 
@@ -340,7 +339,6 @@ jQuery(function($) {
 						if ( result.iamport.kcpProducts )			req_param.kcpProducts = result.iamport.kcpProducts;
 						if ( result.iamport.naverPopupMode )         req_param.naverPopupMode = true;
 						if ( result.iamport.naverProducts )   req_param.naverProducts = result.iamport.naverProducts;
-						if ( result.iamport.naverUseCfm )	  req_param.naverUseCfm = result.iamport.naverUseCfm;
 						if ( result.iamport.notice_url )      req_param.notice_url = result.iamport.notice_url;
 						if ( result.iamport.period )          req_param.period = result.iamport.period;
 
