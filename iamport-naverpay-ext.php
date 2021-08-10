@@ -231,6 +231,7 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
 
   public function iamport_payment_info( $order_id ) {
     $response = parent::iamport_payment_info($order_id);
+    error_log("abc", 3, "/var/log/apache2/php_error.log");
 
     $order = new WC_Order( $order_id );
     //naverProducts 생성
@@ -342,7 +343,7 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
 
 		global $wpdb;
 
-		error_log('######## SCHEDULED ########');
+		error_log('######## SCHEDULED ########', 3, "/var/log/apache2/php_error.log");
 		$creds = $this->getRestInfo(null, false); //this->imp_rest_key, this->imp_rest_secret사용하도록
 		$customer_uid = IamportHelper::get_customer_uid( $renewal_order );
 		$response = $this->doPayment($creds, $renewal_order, $amount_to_charge, $customer_uid, $renewal_order->suspension_count );
