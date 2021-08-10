@@ -412,6 +412,9 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
 		$order_suffix = $is_initial_payment ? '_sf' : date('md');//빌링키 발급때 사용된 merchant_uid중복방지
 		$tax_free_amount = IamportHelper::get_tax_free_amount($order);
 		$notice_url = IamportHelper::get_notice_url();
+    $_extra = array(
+      'naverUseCfm' => '20990101'
+    );
 
 		$iamport = new WooIamport($creds['imp_rest_key'], $creds['imp_rest_secret']);
 		$pay_data = array(
@@ -421,7 +424,8 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
 			'name' => $this->get_order_name($order, $is_initial_payment),
 			'buyer_name' => trim($order->get_billing_last_name() . $order->get_billing_first_name()),
 			'buyer_email' => $order->get_billing_email(),
-			'buyer_tel' => $order->get_billing_phone()
+			'buyer_tel' => $order->get_billing_phone(),
+      'extra' => $_extra
 		);
 		if ( empty($pay_data["buyer_name"]) )	$pay_data["buyer_name"] = $this->get_default_user_name();
 		if ( wc_tax_enabled() )	$pay_data["tax_free"] = $tax_free_amount;
