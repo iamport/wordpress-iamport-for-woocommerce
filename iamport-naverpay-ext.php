@@ -287,7 +287,8 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
       }
   }
 
-  protected function get_order_name($order) { // "XXX 외 1건" 같이 외 1건이 붙으면 안됨
+  protected function get_order_name($order, $initial_payment=true) { // "XXX 외 1건" 같이 외 1건이 붙으면 안됨
+    if ( $this->has_subscription($order->get_id()) ) return $this->get_subscription_order_name($order, $initial_payment);
     $product_items = $order->get_items(); //array of WC_Order_Item_Product
 
     foreach ($product_items as $item) {
@@ -469,23 +470,17 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
 		$this->_iamport_post_meta($order->get_id(), '_customer_uid', $customer_uid); //성공한 customer_uid저장
 	}
 
-	/*protected function get_order_name($order, $initial_payment=true) {
-		if ( $this->has_subscription($order->get_id()) ) {
+	protected function get_subscription_order_name($order, $initial_payment=true) {
+    if ( $initial_payment ) {
+      $order_name = "#" . $order->get_order_number() . "번 주문 정기결제(최초과금)";
+    } else {
+      $order_name = "#" . $order->get_order_number() . sprintf("번 주문 정기결제(%s회차)", $order->suspension_count);
+    }
 
-			if ( $initial_payment ) {
-				$order_name = "#" . $order->get_order_number() . "번 주문 정기결제(최초과금)";
-			} else {
-				$order_name = "#" . $order->get_order_number() . sprintf("번 주문 정기결제(%s회차)", $order->suspension_count);
-			}
+    $order_name = apply_filters('iamport_recurring_order_name', $order_name, $order, $initial_payment);
 
-			$order_name = apply_filters('iamport_recurring_order_name', $order_name, $order, $initial_payment);
-
-			return $order_name;
-
-		}
-
-		return parent::get_order_name($order);
-	}*/
+    return $order_name;
+	}
 
 	private function has_subscription( $order_id ) {
 		return function_exists( 'wcs_order_contains_subscription' ) && ( wcs_order_contains_subscription( $order_id ) || wcs_is_subscription( $order_id ) || wcs_order_contains_renewal( $order_id ) );
