@@ -341,6 +341,7 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
 
 		global $wpdb;
 
+		error_log('######## SCHEDULED ########');
 		$creds = $this->getRestInfo(null, false); //this->imp_rest_key, this->imp_rest_secret사용하도록
 		$customer_uid = IamportHelper::get_customer_uid( $renewal_order );
 		$response = $this->doPayment($creds, $renewal_order, $amount_to_charge, $customer_uid, $renewal_order->suspension_count );
