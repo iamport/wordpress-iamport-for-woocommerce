@@ -50,10 +50,12 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
     $this->method_title = __( '아임포트(결제형-네이버페이)', 'iamport-for-woocommerce' );
     $this->method_description = __( '<b>네이버페이 정책상, 결제형-네이버페이는 사전 승인된 일부 가맹점에 한하여 제공되고 있으며 일반적으로는 "아임포트(네이버페이)"를 사용해주셔야 합니다. 결제형-네이버페이 가입기준에 대해서는 아임포트 고객센터(1670-5176)으로 문의 부탁드립니다.</b>', 'iamport-for-woocommerce' );
     $this->has_fields = true;
-    $this->supports = array( 'products', 'refunds' );
+		$this->supports = array( 'products', 'refunds', 'subscriptions', 'subscription_reactivation'/*이것이 있어야 subscription 후 active상태로 들어갈 수 있음*/, 'subscription_suspension', 'subscription_cancellation', 'subscription_date_changes', 'subscription_amount_changes', 'subscription_payment_method_change_customer', 'multiple_subscriptions' );
 
     $this->title = $this->settings['title'];
     $this->description = $this->settings['description'];
+
+    add_action( 'woocommerce_scheduled_subscription_payment_' . $this->id, array( $this, 'scheduled_subscription_payment' ), 10, 2 );
 
     add_filter( 'woocommerce_available_payment_gateways', array($this, 'eliminateUnderInspection') );
 
@@ -229,7 +231,6 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
 
   public function iamport_payment_info( $order_id ) {
     $response = parent::iamport_payment_info($order_id);
-
     $order = new WC_Order( $order_id );
     //naverProducts 생성
 
@@ -249,10 +250,20 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
     }
 
     $response["naverProducts"] = $naverProducts;
+    $response["naverUseCfm"] = "20991231";
     $response["unblock"] = true;
 
     if ( !wp_is_mobile() ) {
         $response["naverPopupMode"] = true;
+    }
+    if ( $this->has_subscription($order_id) ) { //정기결제
+
+      //customer_uid를 생성해서 js에 전달 및 post_meta에 미리 저장해둠
+      $order = new WC_Order( $order_id );
+      $customer_uid = IamportHelper::get_customer_uid($order);
+
+      $this->_iamport_post_meta($order_id, '_customer_uid_reserved', $customer_uid); //post meta에 저장(예비용 customer_uid. 아직 빌링키까지 등록안됐으므로)
+      $response['customer_uid'] = $customer_uid; //js에 전달
     }
 
     if ($useManualPg) {
@@ -276,7 +287,8 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
       }
   }
 
-  protected function get_order_name($order) { // "XXX 외 1건" 같이 외 1건이 붙으면 안됨
+  protected function get_order_name($order, $initial_payment=true) { // "XXX 외 1건" 같이 외 1건이 붙으면 안됨
+    if ( $this->has_subscription($order->get_id()) ) return $this->get_subscription_order_name($order, $initial_payment);
     $product_items = $order->get_items(); //array of WC_Order_Item_Product
 
     foreach ($product_items as $item) {
@@ -318,6 +330,166 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
       "type" => "ETC",
       "id"   => "ETC",
     );
+  }
+
+  
+
+
+  
+  public function scheduled_subscription_payment( $amount_to_charge, $renewal_order ) {
+		require_once(dirname(__FILE__).'/lib/IamportHelper.php');
+		require_once(dirname(__FILE__).'/lib/iamport.php');
+
+		global $wpdb;
+
+		error_log('######## SCHEDULED ########');
+		$creds = $this->getRestInfo(null, false); //this->imp_rest_key, this->imp_rest_secret사용하도록
+		$customer_uid = IamportHelper::get_customer_uid( $renewal_order );
+		$response = $this->doPayment($creds, $renewal_order, $amount_to_charge, $customer_uid, $renewal_order->suspension_count );
+
+		if ( is_wp_error( $response ) ) {
+			$old_status = $renewal_order->get_status();
+			$renewal_order->update_status( 'failed', sprintf( __( '정기결제승인에 실패하였습니다. (상세 : %s)', 'iamport-for-woocommerce' ), $response->get_error_message() ) );
+
+			//fire hook
+			do_action('iamport_order_status_changed', $old_status, $renewal_order->get_status(), $renewal_order);
+		} else {
+			$recur_imp_uid = 'unknown imp_uid';
+
+			if ($response instanceof WooIamportPayment) {
+				$recur_imp_uid = $response->imp_uid;
+
+				$order_id = $renewal_order->id;
+
+				$this->_iamport_post_meta($order_id, '_iamport_rest_key', $creds['imp_rest_key']);
+				$this->_iamport_post_meta($order_id, '_iamport_rest_secret', $creds['imp_rest_secret']);
+				$this->_iamport_post_meta($order_id, '_iamport_provider', $response->pg_provider);
+				$this->_iamport_post_meta($order_id, '_iamport_paymethod', $response->pay_method);
+				$this->_iamport_post_meta($order_id, '_iamport_pg_tid', $response->pg_tid);
+				$this->_iamport_post_meta($order_id, '_iamport_receipt_url', $response->receipt_url);
+				$this->_iamport_post_meta($order_id, '_iamport_customer_uid', $customer_uid);
+				$this->_iamport_post_meta($order_id, '_iamport_recurring_md', date('md'));
+			}
+
+			try {
+				$wpdb->query("BEGIN");
+				//lock the row
+				$synced_row = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}posts WHERE ID = {$order_id} FOR UPDATE");
+
+				if ( !$this->has_status($synced_row->post_status, wc_get_is_paid_statuses()) ) {
+					$renewal_order->payment_complete( $recur_imp_uid ); //imp_uid
+
+					$wpdb->query("COMMIT");
+
+					//fire hook
+					do_action('iamport_order_status_changed', $synced_row->post_status, $renewal_order->get_status(), $renewal_order);
+
+					$renewal_order->add_order_note( sprintf( __( '정기결제 회차 과금(%s차결제)에 성공하였습니다. (imp_uid : %s)', 'iamport-for-woocommerce' ) , $renewal_order->suspension_count, $recur_imp_uid ) );
+
+					//fire hook
+					do_action('iamport_order_status_changed', $synced_row->post_status, $renewal_order->get_status(), $renewal_order);
+				} else {
+					$wpdb->query("ROLLBACK");
+					//이미 이뤄진 주문
+
+					$renewal_order->add_order_note( sprintf( __( '이미 결제완료처리된 주문에 대해서 결제가 발생했습니다. (imp_uid : %s)', 'iamport-for-woocommerce' ) , $recur_imp_uid ) );
+				}
+
+				return;
+			} catch(Exception $e) {
+				$wpdb->query("ROLLBACK");
+			}
+		}
+	}
+
+	private function doPayment($creds, $order, $total, $customer_uid, $number_of_tried = 0) {
+		if ( $total == 0 )	return true;
+
+		require_once(dirname(__FILE__).'/lib/iamport.php');
+
+		$is_initial_payment = $number_of_tried === 0; //항상 false 임
+
+		$order_suffix = $is_initial_payment ? '_sf' : date('md');//빌링키 발급때 사용된 merchant_uid중복방지
+		$tax_free_amount = IamportHelper::get_tax_free_amount($order);
+		$notice_url = IamportHelper::get_notice_url();
+    $_extra = array(
+      'naverUseCfm' => '20990101'
+    );
+
+		$iamport = new WooIamport($creds['imp_rest_key'], $creds['imp_rest_secret']);
+		$pay_data = array(
+			'amount' => $total,
+			'merchant_uid' => $order->get_order_key() . $order_suffix,
+			'customer_uid' => $customer_uid,
+			'name' => $this->get_order_name($order, $is_initial_payment),
+			'buyer_name' => trim($order->get_billing_last_name() . $order->get_billing_first_name()),
+			'buyer_email' => $order->get_billing_email(),
+			'buyer_tel' => $order->get_billing_phone(),
+      'extra' => $_extra
+		);
+		if ( empty($pay_data["buyer_name"]) )	$pay_data["buyer_name"] = $this->get_default_user_name();
+		if ( wc_tax_enabled() )	$pay_data["tax_free"] = $tax_free_amount;
+		if ( $notice_url )			$pay_data["notice_url"] = $notice_url;
+
+		$result = $iamport->sbcr_again($pay_data);
+
+		$payment_data = $result->data;
+		if ( $result->success ) {
+			if ( $payment_data->status == 'paid' ) {
+				return $payment_data;
+			} else {
+				if ( $is_initial_payment ) {
+					$message = sprintf( __( '정기결제 최초 과금(signup fee)에 실패하였습니다(%s). (사유 : %s)', 'iamport-for-woocommerce' ) , $payment_data->status, $payment_data->fail_reason );
+				} else {
+					$message = sprintf( __( '정기결제 회차 과금(%s차결제)에 실패하였습니다(%s). (사유 : %s)', 'iamport-for-woocommerce' ) , $number_of_tried, $payment_data->status, $payment_data->fail_reason );
+				}
+
+				return new WP_Error( 'iamport_error', $message );
+			}
+		} else {
+			if ( $is_initial_payment ) {
+				$message = sprintf( __( '정기결제 최초 과금(signup fee)에 실패하였습니다(%s). (사유 : %s)', 'iamport-for-woocommerce' ) , $payment_data->status, $result->error['message'] );
+			} else {
+				$message = sprintf( __( '정기결제 회차 과금(%s차결제)에 실패하였습니다(%s). (사유 : %s)', 'iamport-for-woocommerce' ) , $number_of_tried, $payment_data->status, $result->error['message'] );
+			}
+
+			return new WP_Error( 'iamport_error', $message );
+		}
+
+		return new WP_Error( 'iamport_error', 'unknown error' );
+	}
+
+	public function is_paid_confirmed($order, $payment_data) {
+		add_action( 'iamport_post_order_completed', array($this, 'update_customer_uid'), 10, 2 ); //불필요하게 hook이 많이 걸리지 않도록(naver-gateway객체를 여러 군데에서 생성한다.)
+
+		return parent::is_paid_confirmed($order, $payment_data);
+	}
+
+	public function update_customer_uid($order, $payment_data) {
+		$customer_uid = get_post_meta($order->get_id(), '_customer_uid_reserved', true);
+		$this->_iamport_post_meta($order->get_id(), '_customer_uid', $customer_uid); //성공한 customer_uid저장
+	}
+
+	protected function get_subscription_order_name($order, $initial_payment=true) {
+    if ( $initial_payment ) {
+      $order_name = "#" . $order->get_order_number() . "번 주문 정기결제(최초과금)";
+    } else {
+      $order_name = "#" . $order->get_order_number() . sprintf("번 주문 정기결제(%s회차)", $order->suspension_count);
+    }
+
+    $order_name = apply_filters('iamport_recurring_order_name', $order_name, $order, $initial_payment);
+
+    return $order_name;
+	}
+
+	private function has_subscription( $order_id ) {
+		return function_exists( 'wcs_order_contains_subscription' ) && ( wcs_order_contains_subscription( $order_id ) || wcs_is_subscription( $order_id ) || wcs_order_contains_renewal( $order_id ) );
+	}
+
+  private static function is_product_purchasable($product, $disabled_categories) {
+      $is_disabled = $disabled_categories === 'all' || IamportHelper::is_product_in_categories($product->get_id(), $disabled_categories);
+
+      return 	!$is_disabled;
   }
 
 }
