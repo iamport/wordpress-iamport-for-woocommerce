@@ -362,9 +362,14 @@ class WC_Gateway_Iamport_Kakao extends Base_Gateway_Iamport {
     }
 
     public function kakao_unset_gateway_by_category($available_gateways) {
-        if ( ! is_checkout() ) return $available_gateways;
+        if ( !is_checkout() ) return $available_gateways;
         $cart_items = WC()->cart->get_cart();
-        if ( count($cart_items) == 0 )	return; //장바구니가 비어있으면 패스
+
+		// 정기결제 결제수단 변경의 경우 subscription id 가 change_payment_method에 포함되어 URL이 세팅됨
+		if (class_exists('WC_Subscriptions_Change_Payment_Gateway') && WC_Subscriptions_Change_Payment_Gateway::$is_request_to_change_payment) {
+			$subscription_obj = wcs_get_subscription($_GET['change_payment_method']);
+			$cart_items = $subscription_obj ->get_items();
+		}
 
         $categories = $this->get_display_categories();
         $disabled_categories = $this->get_disabled_categories();
