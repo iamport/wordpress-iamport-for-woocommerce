@@ -587,8 +587,8 @@ class WC_Gateway_Iamport_NaverPay extends Base_Gateway_Iamport {
 		if ( !isset($this->settings['disable_button_on_categories']) )	return array();
 
 		$categories = $this->settings['disable_button_on_categories'];
-		if ( $categories === 'all' || in_array('all', $categories) )		return 'all';
-		if ( $categories === 'none' || in_array('none', $categories) )	return array();
+		if ( $categories === 'all' || ( is_array($categories) && in_array('all', $categories) ) )	return 'all';
+		if ( $categories === 'none' || ( is_array($categories) && in_array('none', $categories) ) )	return array();
 
 		return $categories;
 	}
