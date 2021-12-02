@@ -1287,8 +1287,12 @@ if(!function_exists('woocommerce_gateway_iamport_init')){
                 return false;
             }
 
-            public function enqueue_iamport_script() {
-                wp_register_script( 'woocommerce_iamport_script', 'https://cdn.iamport.kr/js/iamport.payment-1.1.7.js', array('jquery'), '20190812' );
+            public function enqueue_iamport_script() {		
+                $imp_version_setting = explode('/', get_option('woocommerce_iamport_sdk_version', '1.1.7/20190812'));
+                $imp_sdk_version = $imp_version_setting[0];
+                $imp_cache_version = $imp_version_setting[1] != 'latest' ? $imp_version_setting[1] : null;
+
+                wp_register_script( 'woocommerce_iamport_script', 'https://cdn.iamport.kr/js/iamport.payment-' . $imp_sdk_version . '.js', array('jquery'), $imp_cache_version );
                 wp_register_script( 'iamport_jquery_url', plugins_url( '/assets/js/url.min.js',plugin_basename(__FILE__) ), array(), '20190918');
                 wp_register_script( 'iamport_script_for_woocommerce', plugins_url( '/assets/js/iamport.woocommerce.js',plugin_basename(__FILE__) ), array('jquery', 'iamport_jquery_url'), '20200925');
                 wp_register_script( 'samsung_runnable', 'https://d3sfvyfh4b9elq.cloudfront.net/pmt/web/device.json' );
