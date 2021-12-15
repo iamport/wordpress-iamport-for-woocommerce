@@ -13,7 +13,8 @@ jQuery(function($) {
 		'iamport_naverpay_ext',
 		'iamport_smilepay',
 		'iamport_paypal',
-		'iamport_alipay'
+		'iamport_alipay',
+		'iamport_paymentwall'
 	];
 
 	var iamport_checkout_types = (function() {

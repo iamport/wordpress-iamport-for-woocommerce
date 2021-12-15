@@ -279,6 +279,10 @@ if(!function_exists('find_gateway')){
                     case 'eximbay' :
                         $gatewayId = WC_Gateway_Iamport_Eximbay::GATEWAY_ID;
                         break;
+                    
+                    case 'paymentwall' :
+                        $gatewayId = WC_Gateway_Iamport_Paymentwall::GATEWAY_ID;
+                        break;
 
                     default :
                         $gatewayId = WC_Gateway_Iamport_Card::GATEWAY_ID;
@@ -1535,6 +1539,7 @@ if(!function_exists('woocommerce_gateway_iamport_init')){
         require_once('iamport-smilepay.php');
         require_once('iamport-alipay.php');
         require_once('iamport-paypal.php');
+        require_once('iamport-paymentwall.php');
 
         require_once('lib/IamportHelper.php');
 
@@ -1572,6 +1577,7 @@ if(!function_exists('woocommerce_add_gateway_iamport_gateway')){
             'WC_Gateway_Iamport_Alipay',
             'WC_Gateway_Iamport_Eximbay',
             'WC_Gateway_Iamport_NaverPayExt',
+            'WC_Gateway_Iamport_Paymentwall'
         );
 
         $methods = array_merge($methods, $iamport_gateways);
