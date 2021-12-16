@@ -305,7 +305,7 @@ class WC_Gateway_Iamport_Kakao extends Base_Gateway_Iamport {
 		if ( !isset($this->settings['show_button_on_categories']) )		return 'all';
 
 		$categories = $this->settings['show_button_on_categories'];
-		if ( $categories === 'all' || in_array('all', $categories) )	return 'all';
+		if ( $categories === 'all' || ( is_array($categories) && in_array('all', $categories) ) )	return 'all';
 
 		return $categories;
 	}
