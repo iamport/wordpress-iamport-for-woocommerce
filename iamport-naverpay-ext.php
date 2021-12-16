@@ -74,7 +74,7 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
       $allowed = explode(",", $debuggers);
       $login = wp_get_current_user();
 
-      if ( 0 == $login->ID || !in_array($login->user_login, $allowed) ) {
+      if ( 0 == $login->ID || ( is_array($allowed) && !in_array($login->user_login, $allowed) ) ) {
         unset($gateways[ $this->get_gateway_id() ]);
       }
     }
@@ -187,7 +187,7 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
       $iamport_naver_ctgr = isset( $_POST["term_meta"]["iamport_naver_ctgr"] ) ? sanitize_text_field( $_POST["term_meta"]["iamport_naver_ctgr"] ) : "";
       $categories = array_keys(self::$PRODUCT_CATEGORIES);
 
-      if ( "NONE" !== $iamport_naver_ctgr && in_array($iamport_naver_ctgr, $categories) ) {
+      if ( "NONE" !== $iamport_naver_ctgr && ( is_array($categories) && in_array($iamport_naver_ctgr, $categories) ) ) {
         $term_meta = array(
           "iamport_naver_ctgr" => $iamport_naver_ctgr
         );
@@ -316,7 +316,7 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
       $iamport_naver_ctgr = empty($term_meta["iamport_naver_ctgr"]) ? "" : $term_meta["iamport_naver_ctgr"];
       $categories = array_keys(self::$PRODUCT_CATEGORIES);
 
-      if ( "NONE" !== $iamport_naver_ctgr && in_array($iamport_naver_ctgr, $categories) ) {
+      if ( "NONE" !== $iamport_naver_ctgr && ( is_array($categories) && in_array($iamport_naver_ctgr, $categories) ) ) {
         $arr = explode("_", $iamport_naver_ctgr, 2); //처음만나는 _ 로만 잘라야 함
 
         return array(
