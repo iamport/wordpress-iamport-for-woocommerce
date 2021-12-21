@@ -8,7 +8,7 @@ class WC_Gateway_Iamport_Paymentwall extends Base_Gateway_Iamport {
 
     //settings
     $this->method_title = __( '아임포트(Paymentwall)', 'iamport-for-woocommerce' );
-    $this->method_description = __( '=> 아임포트 서비스를 이용해 결제모듈을 연동할 수 있습니다.<br>=> [아임포트] X PG사 제휴할인혜택을 받아보세요! <a href="http://www.iamport.kr/pg#promotion" target="_blank">PG 신규계약 프로모션 안내</a><br>=> 아임포트의 최신 공지사항도 놓치지 마세요! <a href="http://www.iamport.kr/notice" target="_blank">공지사항보기</a>', 'iamport-for-woocommerce' );
+    $this->method_description = __( '현재 Paymentwall은 신용카드를 이용한 결제만 정상적으로 동작합니다.', 'iamport-for-woocommerce' );
     $this->has_fields = true;
     $this->supports = array( 'products', 'refunds' );
 
