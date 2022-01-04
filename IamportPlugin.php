@@ -566,8 +566,8 @@ if(!function_exists('iamport_order_endpoint_data')){
                                         return false;
                                     }
 
-                                    location.href = orders_url + '&reason=' + encodeURIComponent(reason)
                                     $( this ).dialog( "close" );
+                                    location.href = orders_url + '&reason=' + encodeURIComponent(reason)
                                 },
                                 "<?=__('그냥두기', 'iamport-for-woocommerce')?>": function() {
                                     $( this ).dialog( "close" );
@@ -618,8 +618,8 @@ if(!function_exists('iamport_order_endpoint_data')){
                                         return false;
                                     }
 
-                                    location.href = orders_url + '&reason=' + encodeURIComponent(reason)
                                     $( this ).dialog( "close" );
+                                    location.href = orders_url + '&reason=' + encodeURIComponent(reason)
                                 },
                                 "<?=__('그냥두기', 'iamport-for-woocommerce')?>": function() {
                                     $( this ).dialog( "close" );
