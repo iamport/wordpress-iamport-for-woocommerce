@@ -1466,7 +1466,11 @@ class IamportNaverPayButton {
 			$button_color = strlen($style) > 1 ? substr($style, 1, 1) : "1";
 		}
 
-		wp_register_script( 'woocommerce_iamport_script', 'https://cdn.iamport.kr/js/iamport.payment-1.1.7.js', array('jquery'), '20190812' );
+		$imp_version_setting = explode('/', get_option('woocommerce_iamport_sdk_version', '1.1.7/20190812'));
+		$imp_sdk_version = $imp_version_setting[0];
+		$imp_cache_version = $imp_version_setting[1] != 'latest' ? $imp_version_setting[1] : null;
+
+		wp_register_script( 'woocommerce_iamport_script', 'https://cdn.iamport.kr/js/iamport.payment-' . $imp_sdk_version . '.js', array('jquery'), $imp_cache_version );
 		wp_register_script( 'naver_inflow_script', '//wcs.naver.net/wcslog.js' );
 
 		if ( wp_is_mobile() ) { //mobile

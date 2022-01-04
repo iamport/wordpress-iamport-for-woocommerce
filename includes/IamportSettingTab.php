@@ -30,6 +30,12 @@ class IamportSettingTab
         require_once(dirname(dirname(__FILE__)) . '/lib/IamportHelper.php');
 
         $custom_statuses = array_merge(array('none'=>'사용안함'), IamportHelper::getCustomStatuses());
+        $version_list = array(
+					'1.1.7/20190812'=>'1.1.7(2019.08.12)',
+					'1.1.7/latest'=>'1.1.7(latest)',
+					'1.1.8/latest'=>'1.1.8(latest)',
+					'1.2.0/latest'=>'1.2.0(latest)',
+				);
 
 		$settings = array(
 			array(
@@ -37,6 +43,14 @@ class IamportSettingTab
 				'type'		=> 'title',
 				'desc'		=> '',
 				'id'		=> 'wc_settings_tab_iamport_section_title'
+			),
+			array(
+				'title'		=> __( '아임포트 자바스크립트 SDK 버전', 'iamport-for-woocommerce' ),
+				'desc'    => __( '아임포트 모듈의 버전을 설정해주세요.<br> ㄴ 기본값은 1.1.7(2019.08.12)입니다<br> ㄴ 자세한 버전별 변경 내역은 <a target="_blank" href="https://docs.iamport.kr/sdk/release-notes">여기</a>를 참고해주세요.', 'iamport-for-woocommerce' ),
+				'id'		=> 'woocommerce_iamport_sdk_version',
+				'default'	=> '1.1.7/20190812',
+				'type'		=> 'select',
+                'options'   => $version_list,
 			),
 			array(
 				'title'		=> __( '자동 완료됨 처리', 'iamport-for-woocommerce' ),
