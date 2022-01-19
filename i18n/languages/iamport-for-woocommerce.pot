@@ -339,6 +339,11 @@ msgstr ""
 msgid "생년월일 또는 사업자등록번호(법인카드)"
 msgstr ""
 
+#: plugin_src/iamport-subscription.php:132
+#: plugin_src/iamport-subscription.php:133
+msgid "생년월일6자리 또는 사업자등록번호10자리"
+msgstr ""
+
 #: plugin_src/iamport-subscription.php:95
 #: plugin_src/iamport-subscription.php:96
 msgid "카드비밀번호 앞2자리"
