@@ -181,7 +181,7 @@ if (!class_exists('WooIamport')) {
             try {
                 $access_token = $this->getAccessCode();
 
-                $keys = array_flip(array('merchant_uid', 'amount', 'tax_free', 'vat', 'card_number', 'expiry', 'birth', 'pwd_2digit', 'card_quota', 'customer_uid', 'name', 'buyer_name', 'buyer_email', 'buyer_tel', 'notice_url', 'extra'));
+                $keys = array_flip(array('merchant_uid', 'amount', 'tax_free', 'vat', 'card_number', 'expiry', 'birth', 'pwd_2digit', 'cvc', 'card_quota', 'customer_uid', 'name', 'buyer_name', 'buyer_email', 'buyer_tel', 'notice_url', 'extra'));
                 $onetime_data = array_intersect_key($data, $keys);
 
                 $response = $this->postResponse(
@@ -256,7 +256,7 @@ if (!class_exists('WooIamport')) {
             try {
                 $access_token = $this->getAccessCode();
 
-                $keys = array_flip(array('card_number', 'expiry', 'birth', 'pwd_2digit',
+                $keys = array_flip(array('card_number', 'expiry', 'birth', 'pwd_2digit', 'cvc',
                     'customer_name', 'customer_tel', 'customer_email', 'customer_addr', 'customer_postcode'));
                 $card_data = array_intersect_key($data, $keys);
 

@@ -82,6 +82,7 @@ class WC_Gateway_Iamport_Subscription extends WC_Payment_Gateway {
                 'default' => 'A',
                 'description' => __( 'PG사와 계약 시 협의된 신용카드 인증 유형에 맞게 출력여부를 지정할 수 있습니다.', 'iamport-for-woocommerce' ),
                 'options' => array(
+					'D' => '(5가지 출력) 카드번호 + 유효기간 + 생년월일(사업자등록번호) + 비밀번호 앞2자리 + cvc',
                     'A' => '(4가지 출력) 카드번호 + 유효기간 + 생년월일(사업자등록번호) + 비밀번호 앞2자리',
                     'B' => '(3가지 출력) 카드번호 + 유효기간 + 생년월일(사업자등록번호)',
                     'C' => '(2가지 출력) 카드번호 + 유효기간',
@@ -136,14 +137,23 @@ class WC_Gateway_Iamport_Subscription extends WC_Payment_Gateway {
 			<label for="' . esc_attr( $id ) . '-card-pwd">' . __( '카드비밀번호 앞2자리', 'iamport-for-woocommerce' ) . ' <span class="required">*</span></label>
 			<input id="' . esc_attr( $id ) . '-card-pwd" class="input-text iamport-card-form iamport-required wc-credit-card-form-card-pwd" type="password" autocomplete="off" placeholder="' . esc_attr__( '카드비밀번호 앞2자리', 'iamport-for-woocommerce' ) . '" name="' . ( $args['fields_have_names'] ? $this->id . '-card-pwd' : '' ) . '" maxlength="2"/>
 			</p>',
+			'card-cvc-field' => '<p class="form-row form-row-last">
+			<label for="' . esc_attr( $id ) . '-card-cvc">' . __( 'cvc', 'iamport-for-woocommerce' ) . ' <span class="required">*</span></label>
+			<input id="' . esc_attr( $id ) . '-card-cvc" class="input-text iamport-card-form iamport-required wc-credit-card-form-card-cvc" type="password" autocomplete="off" placeholder="' . esc_attr__( 'cvc', 'iamport-for-woocommerce' ) . '" name="' . ( $args['fields_have_names'] ? $this->id . '-card-cvc' : '' ) . '" maxlength="4"/>
+			</p>',
 		);
 
 		if ($form_customizable) {
-		    if ($this->settings['card_form_type'] === 'B') {
+			if ($this->settings['card_form_type'] === 'A') {
+				unset($iamport_fields['card-cvc-field']);
+			}
+		    else if ($this->settings['card_form_type'] === 'B') {
 		        unset($iamport_fields['card-pwd-field']);
+				unset($iamport_fields['card-cvc-field']);
             } else if ($this->settings['card_form_type'] === 'C') {
                 unset($iamport_fields['card-birth-field']);
                 unset($iamport_fields['card-pwd-field']);
+				unset($iamport_fields['card-cvc-field']);
             }
         }
 
@@ -193,6 +203,7 @@ class WC_Gateway_Iamport_Subscription extends WC_Payment_Gateway {
 			<input type="hidden" name="enc_iamport_subscription-card-expiry" value="">
 			<input type="hidden" name="enc_iamport_subscription-card-birth" value="">
 			<input type="hidden" name="enc_iamport_subscription-card-pwd" value="">
+			<input type="hidden" name="enc_iamport_subscription-card-cvc" value="">
 			<?php $this->credit_card_form( array( 'fields_have_names' => false ) ); ?>
 		</div>
 		<?php
@@ -351,6 +362,7 @@ class WC_Gateway_Iamport_Subscription extends WC_Payment_Gateway {
 					'expiry' => $this->format_expiry($cardInfo['dec_expiry']),
 					'birth' => $cardInfo['dec_birth'],
 					'pwd_2digit' => $cardInfo['dec_pwd'],
+					'cvc' => $cardInfo['dec_cvc'],
 					'name' => $this->get_order_name($order, $initial_payment),
 					'buyer_name' => trim($order->get_billing_last_name() . $order->get_billing_first_name()),
 					'buyer_email' => $order->get_billing_email(),
@@ -509,6 +521,7 @@ class WC_Gateway_Iamport_Subscription extends WC_Payment_Gateway {
 			'expiry' => $this->format_expiry($cardInfo['dec_expiry']),
 			'birth' => $cardInfo['dec_birth'],
 			'pwd_2digit' => $cardInfo['dec_pwd'],
+			'cvc' => $cardInfo['dec_cvc'],
 			'customer_name' => $buyer_name,
 			'customer_email' => $order->get_billing_email(),
 			'customer_tel' => $order->get_billing_phone()
@@ -524,6 +537,7 @@ class WC_Gateway_Iamport_Subscription extends WC_Payment_Gateway {
 					'expiry' => $this->format_expiry($cardInfo['dec_expiry']),
 					'birth' => $cardInfo['dec_birth'],
 					'pwd_2digit' => $cardInfo['dec_pwd'],
+					'cvc' => $cardInfo['dec_cvc'],
 					'name' => '카드등록테스트결제-자동취소예정',
 					'buyer_name' => $buyer_name,
 					'buyer_email' => $order->get_billing_email(),
@@ -663,6 +677,7 @@ class WC_Gateway_Iamport_Subscription extends WC_Payment_Gateway {
 		$expiry 		= $_POST['enc_iamport_subscription-card-expiry'];
 		$birth 			= $_POST['enc_iamport_subscription-card-birth'];
 		$pwd_2digit 	= $_POST['enc_iamport_subscription-card-pwd'];
+		$cvc			= $_POST['enc_iamport_subscription-card-cvc'];
 		$quota          = intval($_POST['iamport_subscription-card-quota']);
 
 		$private_key = $this->get_private_key();
@@ -671,6 +686,7 @@ class WC_Gateway_Iamport_Subscription extends WC_Payment_Gateway {
 		$dec_expiry			= $this->decrypt( $expiry, $private_key );
 		$dec_birth			= $this->decrypt( $birth, $private_key );
 		$dec_pwd			= $this->decrypt( $pwd_2digit, $private_key );
+		$dec_cvc			= $this->decrypt( $cvc, $private_key );
 
 		//fallback
         if ($dec_card_number === false) { //복호화에 실패하면 평문으로 올라온 값이 있는지 체크
@@ -689,11 +705,16 @@ class WC_Gateway_Iamport_Subscription extends WC_Payment_Gateway {
             $dec_pwd = $_POST['iamport_subscription-card-pwd'];
         }
 
+		if ($dec_cvc === false) { //복호화에 실패하면 평문으로 올라온 값이 있는지 체크
+            $dec_cvc = $_POST['iamport_subscription-card-cvc'];
+        }
+
 		return array(
 			'dec_card_number' => $dec_card_number,
 			'dec_expiry' => $dec_expiry,
 			'dec_birth' => $dec_birth,
 			'dec_pwd' => $dec_pwd,
+			'dec_cvc' => $dec_cvc,
             'quota' => $quota,
 		);
 	}

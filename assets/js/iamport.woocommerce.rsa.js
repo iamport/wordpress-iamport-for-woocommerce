@@ -115,16 +115,20 @@ jQuery(function($) {
 			var enc_card_expiry = rsa.encrypt( param['iamport_subscription-card-expiry'] || '' );
 			var enc_card_birth 	= rsa.encrypt( param['iamport_subscription-card-birth'] || '' );
 			var enc_card_pwd 	= rsa.encrypt( param['iamport_subscription-card-pwd'] || '' );
+			var enc_card_cvc    = rsa.encrypt( param['iamport_subscription-card-cvc'] || '' );
 
 			param['enc_iamport_subscription-card-number'] 	= enc_card_number;
 			param['enc_iamport_subscription-card-expiry'] 	= enc_card_expiry;
 			param['enc_iamport_subscription-card-birth'] 	= enc_card_birth;
 			param['enc_iamport_subscription-card-pwd']	 	= enc_card_pwd;
+			param['enc_iamport_subscription-card-cvc']      = enc_card_cvc;
+
 
 			delete param['iamport_subscription-card-number'];
 			delete param['iamport_subscription-card-expiry'];
 			delete param['iamport_subscription-card-birth'];
 			delete param['iamport_subscription-card-pwd'];
+			delete param['iamport_subscription-card-cvc'];
 		} else if ( gateway == 'iamport_foreign' ) {
 			var holder = $('#iamport-foreign-card-holder'),
 				module = holder.data('module'),
