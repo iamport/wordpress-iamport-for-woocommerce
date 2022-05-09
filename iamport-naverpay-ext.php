@@ -124,7 +124,7 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
         'label' => __( '이용완료일', 'iamport-for-woocommerce' ),
         'description' => __( '이용완료일 기준 정산 및 포인트 적립 가맹점에서만 사용해주세요. (ex 20991231)', 'iamport-for-woocommerce' ),
         'type' => 'text',
-        'default' => "",
+        'default' => "20991231",
       ),
     ), $this->form_fields, array(
         'use_manual_pg' => array(
