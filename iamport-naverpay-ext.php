@@ -119,6 +119,13 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
         'type' => 'text',
         'default' => "",
       ),
+      'useCfmYmdt' => array(
+        'title' => __( '이용완료일', 'iamport-for-woocommerce' ),
+        'label' => __( '이용완료일', 'iamport-for-woocommerce' ),
+        'description' => __( '이용완료일 기준 정산 및 포인트 적립 가맹점에서만 사용해주세요. (ex 20991231)', 'iamport-for-woocommerce' ),
+        'type' => 'text',
+        'default' => "",
+      ),
     ), $this->form_fields, array(
         'use_manual_pg' => array(
             'title' => __( 'PG설정 구매자 선택방식 사용', 'woocommerce' ),
@@ -250,7 +257,10 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
     }
 
     $response["naverProducts"] = $naverProducts;
-    $response["naverUseCfm"] = "20991231";
+    $naverUseCfm = $this->settings["useCfmYmdt"];
+    if ($naverUseCfm && $naverUseCfm != "") {
+      $response["naverUseCfm"] = $naverUseCfm;
+    }
     $response["unblock"] = true;
 
     if ( !wp_is_mobile() ) {
