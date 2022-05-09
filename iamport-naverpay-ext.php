@@ -119,10 +119,17 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
         'type' => 'text',
         'default' => "",
       ),
-      'useCfmYmdt' => array(
-        'title' => __( '이용완료일', 'iamport-for-woocommerce' ),
-        'label' => __( '이용완료일', 'iamport-for-woocommerce' ),
-        'description' => __( '이용완료일 기준 정산 및 포인트 적립 가맹점에서만 사용해주세요. (ex 20991231)', 'iamport-for-woocommerce' ),
+      'useCfm' => array(
+        'title' => __( '이용완료일 사용 여부', 'iamport-for-woocommerce' ),
+        'label' => __( '이용완료일 사용 여부', 'iamport-for-woocommerce' ),
+        'description' => __( '이용완료일 기준 정산 및 포인트 적립 가맹점에서만 사용해주세요', 'iamport-for-woocommerce' ),
+        'type' => 'checkbox',
+        'default' => "yes",
+      ),
+      'cfmYmdt' => array(
+        'title' => __( '이용완료일(yyyyMMdd)', 'iamport-for-woocommerce' ),
+        'label' => __( '이용완료일(yyyyMMdd)', 'iamport-for-woocommerce' ),
+        'description' => __( '사용 여부를 체크한 뒤 20991231와 같은 형식으로 적어주세요.', 'iamport-for-woocommerce' ),
         'type' => 'text',
         'default' => "20991231",
       ),
@@ -257,9 +264,11 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
     }
 
     $response["naverProducts"] = $naverProducts;
-    $naverUseCfm = $this->settings["useCfmYmdt"];
-    if ($naverUseCfm && $naverUseCfm != "") {
-      $response["naverUseCfm"] = $naverUseCfm;
+    $useCfm = $this->settings["useCfm"];
+    if (!isset($useCfm)) {
+      $response["naverUseCfm"] = "20991231";
+    } else if ($useCfm == 'yes') {
+      $response["naverUseCfm"] = $this->settings["cfmYmdt"];
     }
     $response["unblock"] = true;
 
