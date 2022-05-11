@@ -119,6 +119,20 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
         'type' => 'text',
         'default' => "",
       ),
+      'useCfm' => array(
+        'title' => __( '이용완료일 사용 여부', 'iamport-for-woocommerce' ),
+        'label' => __( '이용완료일 사용 여부', 'iamport-for-woocommerce' ),
+        'description' => __( '이용완료일 기준 정산 및 포인트 적립 가맹점에서만 사용해주세요', 'iamport-for-woocommerce' ),
+        'type' => 'checkbox',
+        'default' => "yes",
+      ),
+      'cfmYmdt' => array(
+        'title' => __( '이용완료일(yyyyMMdd)', 'iamport-for-woocommerce' ),
+        'label' => __( '이용완료일(yyyyMMdd)', 'iamport-for-woocommerce' ),
+        'description' => __( '사용 여부를 체크한 뒤 20991231와 같은 형식으로 적어주세요.', 'iamport-for-woocommerce' ),
+        'type' => 'text',
+        'default' => "20991231",
+      ),
     ), $this->form_fields, array(
         'use_manual_pg' => array(
             'title' => __( 'PG설정 구매자 선택방식 사용', 'woocommerce' ),
@@ -250,7 +264,12 @@ class WC_Gateway_Iamport_NaverPayExt extends Base_Gateway_Iamport {
     }
 
     $response["naverProducts"] = $naverProducts;
-    $response["naverUseCfm"] = "20991231";
+    $useCfm = $this->settings["useCfm"];
+    if (!isset($useCfm)) {
+      $response["naverUseCfm"] = "20991231";
+    } else if ($useCfm == 'yes') {
+      $response["naverUseCfm"] = $this->settings["cfmYmdt"];
+    }
     $response["unblock"] = true;
 
     if ( !wp_is_mobile() ) {
