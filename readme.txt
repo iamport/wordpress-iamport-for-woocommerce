@@ -4,7 +4,7 @@ Donate link: http://www.iamport.kr
 Tags: 네이버페이, 카카오페이, 페이코, 이니시스, KCP, naverpay, naver, payco, kakao, kakaopay, kpay, inicis, 유플러스, lguplus, uplus, 나이스, 나이스페이, nice, nicepay, 제이티넷, 티페이, jtnet, tpay, 다날, danal, 모빌리언스, mobilians, 정기결제, subscription, 해외카드, visa, master, jcb, shopping, mall, iamport
 Requires at least: 3.5
 Tested up to: 5.5.1
-Stable tag: 2.2.31
+Stable tag: 2.2.32
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -60,6 +60,9 @@ https://www.facebook.com/iamportservice
 
 
 == Changelog ==
+= 2.2.32 =
+* 네이버페이 결제형 이용완료일을 수정할 수 있게 설정에 추가
+
 = 2.2.31 =
 * 워드프레스 영문 설정에서 키인결제 선택 시, 영문 번역되지 않은 부분 수정
 
