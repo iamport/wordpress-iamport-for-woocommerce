@@ -80,6 +80,7 @@ class WC_Gateway_Iamport_Card extends Base_Gateway_Iamport {
 					'danal_tpay' => '다날-신용카드',
 					'mobilians' => '모빌리언스-신용카드',
 					'kicc' => 'KICC',
+					'daou' => '다우데이타(페이조아)'
 				)
 			),
 			'pg_id' => array(
