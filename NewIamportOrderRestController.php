@@ -550,7 +550,7 @@ class NewIamportOrderRestController extends WP_REST_Controller
             case 'allspot':
                 return 3580;
             case 'seocho':
-                return 16;
+                return 3581;
             case 'hongdae':
                 return 3582;
             case 'yeouido':
@@ -559,6 +559,16 @@ class NewIamportOrderRestController extends WP_REST_Controller
                 return 3726;
             case 'hapjeong':
                 return 3727;
+            case 'yeoksam':
+                return 6180;
+            case 'yeongdeungpo':
+                return 9847;
+            case 'guro':
+                return 9848;
+            case 'yongsan':
+                return 9849;
+            case 'seolleung':
+                return 9850;
             default:
                 return null;
         }
@@ -581,6 +591,16 @@ class NewIamportOrderRestController extends WP_REST_Controller
                 return 'ONE SPOT 멤버십 - 반포 FIVE SPOT 전용';
             case 'hapjeong':
                 return 'ONE SPOT 멤버십 - 합정 FIVE SPOT 전용';
+            case 'yeoksam':
+                return 'ONE SPOT 멤버십 - 역삼 FIVE SPOT 전용';
+            case 'yeongdeungpo':
+                return 'ONE SPOT 멤버십 - 영등포 FIVE SPOT 전용';
+            case 'guro':
+                return 'ONE SPOT 멤버십 - 구로 FIVE SPOT 전용';
+            case 'yongsan':
+                return 'ONE SPOT 멤버십 - 용산 FIVE SPOT 전용';
+            case 'seolleung':
+                return 'ONE SPOT 멤버십 - 선릉 FIVE SPOT 전용';
             default:
                 return '';
             // case 'rounge' :
