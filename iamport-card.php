@@ -74,6 +74,7 @@ class WC_Gateway_Iamport_Card extends Base_Gateway_Iamport {
 					'none' => '해당사항없음',
 					'html5_inicis' => 'KG이니시스-웹표준결제',
 					'kcp' => 'NHN KCP',
+					'tosspayments' => '토스페이먼츠',
 					'uplus' => 'LGU+',
 					'nice' => '나이스정보통신',
 					'jtnet' => 'JTNet',
