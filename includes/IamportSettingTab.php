@@ -35,6 +35,7 @@ class IamportSettingTab
 					'1.1.7/latest'=>'1.1.7(latest)',
 					'1.1.8/latest'=>'1.1.8(latest)',
 					'1.2.0/latest'=>'1.2.0(latest)',
+					'1.3.0/latest'=>'1.3.0(latest)',
 				);
 
 		$settings = array(
