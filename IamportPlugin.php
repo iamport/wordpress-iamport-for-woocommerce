@@ -3,9 +3,9 @@
  * Plugin Name: 우커머스용 아임포트 플러그인(국내 모든 PG를 한 번에)
  * Plugin URI: http://www.iamport.kr
  * Description: 우커머스용 한국PG 연동 플러그인 ( 신용카드 / 실시간계좌이체 / 가상계좌 / 휴대폰소액결제 - 에스크로포함 )
- * Version: 2.2.34
- * Author: SIOT
- * Author URI: http://www.siot.do
+ * Version: 2.2.35
+ * Author: PortOne
+ * Author URI: https://portone.io/
  *
  * Text Domain: iamport-for-woocommerce
  * Domain Path: /i18n/languages/
@@ -123,23 +123,7 @@ if(!function_exists('init_iamport_plugin')){
             //상품 제공기간
             add_action( 'woocommerce_product_options_advanced', 'iamport_advanced_meta' );
             add_action( 'woocommerce_process_product_meta', 'iamport_advanced_meta_save' );
-
-            //rest api endpoint
-            add_action('rest_api_init', 'register_iamport_rest_routes');
         }
-}
-
-if(!function_exists('register_iamport_rest_routes')){
-    function register_iamport_rest_routes()
-    {
-        require_once('IamportOrderRestController.php');
-        require_once('NewIamportOrderRestController.php');
-
-        $controller = new IamportOrderRestController();
-        $controller->register_routes();
-        $controller = new NewIamportOrderRestController();
-        $controller->register_routes();
-    }
 }
 
 if(!function_exists('enqueue_iamport_common_script')){

@@ -13,7 +13,7 @@ if ( ! class_exists( 'IMP_Email_Admin_Vbank_Confirm_Order' ) ) :
  *
  * @class       IMP_Email_Admin_Vbank_Confirm_Order
  * @version     1.3.4
- * @author      SIOT
+ * @author      PortOne
  * @extends     WC_Email
  */
 class IMP_Email_Admin_Vbank_Confirm_Order extends WC_Email {

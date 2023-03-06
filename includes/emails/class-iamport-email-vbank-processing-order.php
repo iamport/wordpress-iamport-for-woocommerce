@@ -11,7 +11,7 @@ if ( ! class_exists( 'IMP_Email_Customer_Vbank_Processing_Order' ) ) :
  *
  * @class       IMP_Email_Customer_Vbank_Processing_Order
  * @version     1.3.4
- * @author      SIOT
+ * @author      PortOne
  * @extends     WC_Email
  */
 class IMP_Email_Customer_Vbank_Processing_Order extends WC_Email {

@@ -60,6 +60,7 @@ class WC_Gateway_Iamport_Eximbay extends Base_Gateway_Iamport {
                           <option value="unionpay">UnionPay</option>
                           <option value="alipay">Alipay</option>
                           <option value="wechat">WechatPay</option>
+                          <option value="molpay">Molpay</option>
                           <option value="econtext">' . __( 'EContext(일본편의점결제)', 'iamport-for-woocommerce' ) . '</option>
                       </select> </p>';
 
