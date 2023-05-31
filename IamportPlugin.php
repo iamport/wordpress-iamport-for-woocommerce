@@ -885,6 +885,7 @@ if(!function_exists('woocommerce_gateway_iamport_init')){
 
             abstract protected function get_gateway_id();
             abstract public function iamport_order_detail( $order_id );
+            public function update_shipping_info($order, $payment_data) {}
 
             public function init_form_fields() {
                 //iamport기본 플러그인에 해당 정보가 세팅되어있는지 먼저 확인
