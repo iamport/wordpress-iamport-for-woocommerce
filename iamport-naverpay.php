@@ -629,6 +629,66 @@ class WC_Gateway_Iamport_NaverPay extends Base_Gateway_Iamport {
 		return $payment_data->status === 'paid'; //이미 paid인 건에 대해서만 is_paid_confirmed가 호출되기는 하지만 한 번 더 체크
 	}
 
+	public function update_shipping_info($order, $payment_data) {
+		try {
+			// 네이버페이 상품주문정보 조회
+			$impUid = $payment_data->imp_uid;
+
+			$iamport = new WooIamport($this->imp_rest_key, $this->imp_rest_secret);
+			$result = $iamport->getNaverProductOrders($impUid);
+
+			if ( $result->success ) {
+				$productOrders = $result->data;
+
+				$shippingNotes = array();
+				foreach ($productOrders as $idx=>$po) {
+				    //product line item
+                    $productLineItem = IamportHelper::findProductItem($order, $po->product_id, self::getVariationIdFromQuery($po->product_option_id), self::getAttributesFromQuery($po->product_option_id));
+                    if ($productLineItem) {
+                        $productLineItem->add_meta_data('naver_product_order_id', $po->product_order_id);
+                        $productLineItem->add_meta_data('naver_product_order_status', $po->product_order_status);
+                        $productLineItem->add_meta_data('product_amount', $po->product_amount);
+                        $productLineItem->add_meta_data('delivery_amount', $po->delivery_amount);
+                        $productLineItem->add_meta_data('shipping_memo', $po->shipping_memo ? $po->shipping_memo : '없음');
+                        $productLineItem->add_meta_data('shipping_due', $po->shipping_due ? date('Y-m-d H:i:s', $po->shipping_due + get_option('gmt_offset')*HOUR_IN_SECONDS) : '없음');
+                        $productLineItem->save_meta_data();
+                    }
+
+					$shippingNotes[] = sprintf( __( '[상품명 : %s] 배송요청사항 : %s (배송기한 : %s)', 'iamport-for-woocommerce' ),
+																								$po->product_name,
+																								$po->shipping_memo ? $po->shipping_memo : "없음",
+																								$po->shipping_due ? date('Y-m-d H:i:s', $po->shipping_due + get_option('gmt_offset')*HOUR_IN_SECONDS) : "없음");
+
+					if ( $idx == 0 ) { //첫번째 상품정보에서 orderer / shipping 정보 추출
+						if(!empty($order->get_shipping_address_1()) && ($order->get_shipping_address_1() != $po->shipping_address->base)) {
+							$order->add_order_note("네이버페이 배송지가 변경되었습니다.");
+							$order->update_status('address-changed');
+						}
+						$order->set_billing_first_name( $po->orderer->name );
+						$order->set_billing_email( $po->orderer->id . "@naver.com" );
+						$order->set_billing_phone( $po->orderer->tel );
+
+						$order->set_shipping_first_name( $po->shipping_address->name );
+						$order->add_meta_data( "_shipping_phone1", $po->shipping_address->tel1, true ); //구리지만 어쩔 수 없음
+						$order->add_meta_data( "_shipping_phone2", $po->shipping_address->tel2, true ); //구리지만 어쩔 수 없음
+						$order->set_shipping_address_1( $po->shipping_address->base );
+						$po->shipping_address->detail ? $order->set_shipping_address_2( $po->shipping_address->detail ) : $order->set_shipping_address_2("");
+						$order->set_shipping_postcode( $po->shipping_address->postcode );
+					}
+				}
+
+				$orderComment = implode(",\n", $shippingNotes);
+				$order->set_customer_note( $orderComment );
+			} else {
+                $order->add_order_note( '[네이버페이-상세조회실패] ' . $result->error['message'] );
+                error_log('[네이버페이-상세조회실패] ' . $result->error['message']);
+            }
+		} catch (Exception $e) {
+			$order->add_order_note( '[네이버페이-상세조회실패] ' . $e->getMessage() );
+			error_log($e);
+		}
+	}
+
 	public function update_shipping_amount($order, $payment_data) {
 		$shipping_amount = $payment_data->amount - $order->get_total();
 

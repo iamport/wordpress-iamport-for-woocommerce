@@ -3,7 +3,7 @@
  * Plugin Name: 우커머스용 아임포트 플러그인(국내 모든 PG를 한 번에)
  * Plugin URI: http://www.iamport.kr
  * Description: 우커머스용 한국PG 연동 플러그인 ( 신용카드 / 실시간계좌이체 / 가상계좌 / 휴대폰소액결제 - 에스크로포함 )
- * Version: 2.2.35
+ * Version: 2.2.36
  * Author: PortOne
  * Author URI: https://portone.io/
  *
@@ -100,6 +100,7 @@ if(!function_exists('init_iamport_plugin')){
 
             $label_refund = IamportHelper::display_label(IamportHelper::STATUS_REFUND);
             $label_exchange = IamportHelper::display_label(IamportHelper::STATUS_EXCHANGE);
+            $label_address_changed = IamportHelper::DEFAULT_STATUS_ADDRESS_CHANGED;
 
             register_post_status( 'wc-refund-request', array(
                 'label'						=> __( "{$label_refund}", 'iamport-for-woocommerce' ),
@@ -117,6 +118,15 @@ if(!function_exists('init_iamport_plugin')){
                 'show_in_admin_all_list'	=> true,
                 'show_in_admin_status_list'	=> true,
                 'label_count'				=> _n_noop( "{$label_exchange} <span class=\"count\">(%s)</span>", "{$label_exchange} <span class=\"count\">(%s)</span>" )
+            ) );
+
+            register_post_status( 'wc-address-changed', array(
+                'label'						=> __( "{$label_address_changed}", 'iamport-for-woocommerce' ),
+                'public'					=> true,
+                'exclude_from_search'		=> false,
+                'show_in_admin_all_list'	=> true,
+                'show_in_admin_status_list'	=> true,
+                'label_count'				=> _n_noop( "{$label_address_changed} <span class=\"count\">(%s)</span>", "{$label_address_changed} <span class=\"count\">(%s)</span>" )
             ) );
 
 
@@ -145,9 +155,11 @@ if(!function_exists('add_cancel_actions_to_order_statuses')){
             if ( 'wc-cancelled' === $key ) {
                 $label_refund = IamportHelper::display_label(IamportHelper::STATUS_REFUND);
                 $label_exchange = IamportHelper::display_label(IamportHelper::STATUS_EXCHANGE);
+                $label_address_changed = IamportHelper::DEFAULT_STATUS_ADDRESS_CHANGED;
 
                 $new_order_statuses['wc-refund-request'] = __( "{$label_refund}", 'iamport-for-woocommerce' );
                 $new_order_statuses['wc-exchange-request'] = __( "{$label_exchange}", 'iamport-for-woocommerce' );
+                $new_order_statuses['wc-address-changed'] = __( "{$label_address_changed}", 'iamport-for-woocommerce' );
             }
         }
 
@@ -986,6 +998,9 @@ if(!function_exists('woocommerce_gateway_iamport_init')){
                         $this->_iamport_post_meta($order_id, '_iamport_paymethod', $payment_data->pay_method);
                         $this->_iamport_post_meta($order_id, '_iamport_pg_tid', $payment_data->pg_tid);
                         $this->_iamport_post_meta($order_id, '_iamport_receipt_url', $payment_data->receipt_url);
+                        
+                        $order = new WC_Order( $order_id );
+                        $gateway->update_shipping_info($order, $payment_data);
 
                         if ( $payment_data->status === 'paid' ) {
                             $loggers[] = "B:paid";
@@ -994,8 +1009,6 @@ if(!function_exists('woocommerce_gateway_iamport_init')){
                                 $wpdb->query("BEGIN");
                                 //lock the row
                                 $synced_row = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}posts WHERE ID = {$order_id} FOR UPDATE");
-
-                                $order = new WC_Order( $order_id ); //lock잡은 후 호출(2017-01-16 : 의미없음. [1.6.8] synced_row의 값을 활용해서 status체크해야 함)
 
                                 if ( $gateway->is_paid_confirmed($order, $payment_data) ) {
                                     $loggers[] = "C:confirm";
