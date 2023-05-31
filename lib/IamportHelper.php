@@ -11,6 +11,7 @@ if (!class_exists('IamportHelper')) {
         const DEFAULT_STATUS_REFUND = '반품요청';
         const DEFAULT_STATUS_EXCHANGE = '교환요청';
         const DEFAULT_STATUS_AWAITING_VBANK = '가상계좌 입금대기 중';
+        const DEFAULT_STATUS_ADDRESS_CHANGED = '배송지 변경';
 
         public static function get_customer_uid($order)
         {
