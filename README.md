@@ -1,17 +1,17 @@
-<p align="center"><a href="https://www.iamport.kr"><img src="https://ps.w.org/iamport-for-woocommerce/assets/banner-772x250.png" width="100%" alt="Iamport For Woocommerce"></a></p>
+![portone-banner-772x250](https://github.com/iamport/wordpress-iamport-for-woocommerce/assets/99194042/ef03d728-d30c-4150-8e40-765b4e762c0b)
 
-> 신용카드/실시간이체/가상계좌/휴대폰소액결제 가능. 국내 여러 PG사를 지원.
+> 신용카드/실시간이체/가상계좌/휴대폰소액결제/간편결제 가능. 국내 여러 PG사를 지원.
 
 [워드프레스 플러그인 링크](https://wordpress.org/plugins/iamport-for-woocommerce/) 
 
-아임포트는 국내 PG서비스들을 표준화하고 있는 결제 서비스입니다.<br>
-아임포트 하나면 국내 여러 PG사들의 결제 기능을 표준화된 동일한 방식으로 사용할 수 있게 됩니다.
+포트원(구 아임포트)은 국내 PG서비스들을 표준화하고 있는 결제 서비스입니다.<br>
+포트원 하나면 국내 여러 PG사들의 결제 기능을 표준화된 동일한 방식으로 사용할 수 있게 됩니다.
 
 
-이 플러그인은 아임포트 서비스를 우커머스(woocommerce)환경에 맞게 적용한 결제 플러그인입니다.
-`신용카드` / `실시간계좌이체` / `가상계좌` / `휴대폰소액결제`를 지원합니다.
+이 플러그인은 포트원 서비스를 우커머스(woocommerce)환경에 맞게 적용한 결제 플러그인입니다.
+`신용카드` / `실시간계좌이체` / `가상계좌` / `휴대폰소액결제` / `계좌이체` / `간편결제`를 지원합니다.
 
-`네이버페이` `삼성페이` `PAYCO(페이코)` `카카오페이` `KG이니시스` `KCP` `LGU+` `나이스정보통신` `JTNet(tPay)` `KICC` `다날` `모빌리언스(휴대폰소액결제)` PG를 지원하고 있습니다.
+`네이버페이` `PAYCO(페이코)` `카카오페이` `KG이니시스` `KCP` `토스페이먼츠` `나이스페이먼츠` `KSNET` `웰컴페이먼츠` `헥토파이낸셜` `KICC` `다날` `모빌리언스(휴대폰소액결제)` PG를 지원하고 있습니다.
 또한 `우커머스 정기결제 플러그인`도 지원하고 있습니다.
 
 1.4.2 버전부터는 다국어 지원이 가능합니다. 언어별 번역 프로젝트에 참여를 부탁드립니다.
@@ -22,13 +22,13 @@ http://www.iamport.kr 에서 아임포트 서비스에 대한 보다 상세한 �
 
 데모 페이지 : http://demo.movingcart.kr <br>
 
-* 아임포트 관리자 페이지( https://admin.iamport.kr ) 에서 관리자 회원가입을 합니다.
-* 아임포트 플러그인을 다운받아 워드프레스에 설치합니다.
-* 아임포트 시스템설정 페이지에서 "가맹점 식별코드", "REST API키", "REST API secret"을 플러그인 설정에 저장합니다.
+* 포트원 관리자 페이지( https://admin.iamport.kr ) 에서 관리자 회원가입을 합니다.
+* 포트원 플러그인을 다운받아 워드프레스에 설치합니다.
+* 포트원 콘솔 > 결제연동 > 내 식별코드에서 "가맹점 식별코드", "REST API키", "REST API secret"을 플러그인 설정에 저장합니다.
 
 
 ## 설치
-> 아임포트 플러그인 설치, https://admin.iamport.kr 에서 관리자 회원가입, 시스템설정 정보저장이 필요합니다.
+> 포트원 플러그인 설치, https://admin.portone.io 에서 관리자 회원가입, 시스템설정 정보저장이 필요합니다.
 
 1. 다운받은 iamport.zip파일을 `/wp-content/plugins/` 디렉토리에 복사합니다.
 2. unzip iamport.zip으로 압축 파일을 해제하면 iamport폴더가 생성됩니다.
@@ -64,12 +64,12 @@ http://www.iamport.kr 에서 아임포트 서비스에 대한 보다 상세한 �
 
 ## FAQ
 ### 서비스 소개
-https://www.iamport.kr
+https://www.portone.io
 ### 관리자 페이지
-https://admin.iamport.kr
+https://admin.portone.io
 ### 아임포트 docs
-https://docs.iamport.kr
+https://developers.portone.io/docs/ko/readme
 ### 페이스북
 https://www.facebook.com/iamportservice
 ### 고객센터
-1670-5176 / cs@iamport.kr
+1670-5176 / cs@portone.io
