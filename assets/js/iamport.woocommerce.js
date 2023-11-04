@@ -230,7 +230,7 @@ jQuery(function($) {
 						if ( result.iamport.unblock )	unblockUI($form);
 
 						IMP.request_pay(req_param, function(rsp) {
-							if ( rsp.success ) {
+							if ( rsp.success == true || rsp.error_msg == null ) {
 								window.location.href = result.iamport.m_redirect_url + "&imp_uid=" + rsp.imp_uid; //IamportPlugin.check_payment_response() 에서 필수
 							} else {
 								alert(rsp.error_msg);
@@ -364,7 +364,7 @@ jQuery(function($) {
 						if ( result.iamport.unblock )	unblockUI($form);
 
 						IMP.request_pay(req_param, function(rsp) {
-							if ( rsp.success ) {
+							if ( rsp.success == true || rsp.error_msg == null ) {
 								window.location.href = result.iamport.m_redirect_url + "&imp_uid=" + rsp.imp_uid;
 							} else {
 								alert(rsp.error_msg);

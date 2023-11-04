@@ -74,14 +74,16 @@ class WC_Gateway_Iamport_Card extends Base_Gateway_Iamport {
 					'none' => '해당사항없음',
 					'html5_inicis' => 'KG이니시스-웹표준결제',
 					'kcp' => 'NHN KCP',
-					'tosspayments' => '토스페이먼츠',
-					'uplus' => 'LGU+',
-					'nice' => '나이스정보통신',
-					'jtnet' => 'JTNet',
+					'tosspayments' => '(신)토스페이먼츠',
+					'uplus' => '(구)토스페이먼츠',
+					'nice' => '나이스페이먼츠',
 					'danal_tpay' => '다날-신용카드',
 					'mobilians' => '모빌리언스-신용카드',
 					'kicc' => 'KICC',
-					'daou' => '다우데이타(페이조아)'
+					'daou' => '다우데이타(페이조아)',
+                    'ksnet' => 'KSNET',
+                    'welcome'  => '웰컴페이먼츠',
+                    'settle'  => '핵토파이낸셜',
 				)
 			),
 			'pg_id' => array(

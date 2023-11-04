@@ -82,13 +82,15 @@ class WC_Gateway_Iamport_Trans extends Base_Gateway_Iamport {
 					'none' => '해당사항없음',
 					'html5_inicis' => 'KG이니시스-웹표준결제',
 					'kcp' => 'NHN KCP',
-					'uplus' => 'LGU+',
-					'nice' => '나이스정보통신',
+					'uplus' => '(구)토스페이먼츠',
+					'nice' => '나이스페이먼츠',
 					'jtnet' => 'JTNet',
 					'danal_tpay' => '다날-계좌이체',
                     'mobilians' => '모빌리언스-계좌이체',
 					'kicc' => 'KICC',
                     'payple' => '페이플(간편계좌)',
+                    'ksnet' => 'KSNET',
+                    'welcome'  => '웰컴페이먼츠',
 				)
 			),
 			'pg_id' => array(

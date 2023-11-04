@@ -81,12 +81,14 @@ class WC_Gateway_Iamport_Phone extends Base_Gateway_Iamport {
 					'none' => '해당사항없음',
 					'html5_inicis' => 'KG이니시스-웹표준결제',
 					'kcp' => 'NHN KCP',
-					'uplus' => 'LGU+',
-					'nice' => '나이스정보통신',
+					'uplus' => '토스페이먼츠',
+					'nice' => '나이스페이먼츠',
 					'jtnet' => 'JTNet',
 					'kicc' => 'KICC',
 					'danal' => '다날-휴대폰소액결제',
-					'mobilians' => '모빌리언스'
+					'mobilians' => '모빌리언스',
+                    'ksnet' => 'KSNET',
+                    'welcome'  => '웰컴페이먼츠',
 				)
 			),
 			'pg_id' => array(
