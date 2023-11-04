@@ -34,7 +34,7 @@ http://www.iamport.kr 에서 아임포트 서비스에 대한 보다 상세한 �
 2. unzip iamport.zip으로 압축 파일을 해제하면 iamport폴더가 생성됩니다.
 3. 워드프레스 관리자페이지에서 'Plugins'메뉴를 통해 "아임포트" 플러그인을 활성화합니다.
 
-![screenshot_1](https://github.com/iamport/wordpress-iamport-for-woocommerce/blob/main/assets/screenshot-1.png)
+<img width="1691" alt="" src="https://github.com/iamport/wordpress-iamport-for-woocommerce/assets/99194042/89ef1e0d-80db-4103-a973-c52c6c6139c9">
 
 4. https://admin.iamport.kr 에서 관리자 회원가입 후 시스템설정 페이지의 "가맹점 식별코드", "REST API키", "REST API secret"를 확인합니다.
    
