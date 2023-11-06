@@ -2,8 +2,8 @@
 /**
  * Plugin Name: 우커머스용 아임포트 플러그인(국내 모든 PG를 한 번에)
  * Plugin URI: http://www.iamport.kr
- * Description: 우커머스용 한국PG 연동 플러그인 ( 신용카드 / 실시간계좌이체 / 가상계좌 / 휴대폰소액결제 - 에스크로포함 )
- * Version: 2.2.36
+ * Description: 우커머스용 한국PG 연동 플러그인 ( 신용카드 / 실시간계좌이체 / 가상계좌 / 휴대폰소액결제 - 에스크로포함 / 간편결제 )
+ * Version: 2.2.37
  * Author: PortOne
  * Author URI: https://portone.io/
  *
