@@ -87,6 +87,12 @@ class WC_Gateway_Iamport_Subscription extends WC_Payment_Gateway {
                     'C' => '(2가지 출력) 카드번호 + 유효기간',
                 ),
             ),
+            'per_subscription_card' => array(
+            	'title' => __( '정기결제 별 카드정보 저장', 'iamport-for-woocommerce' ),
+            	'type' => 'checkbox',
+				'label' => __( '정기결제 마다 다른 카드로 결제 가능하도록 합니다. 사용하지 않으면 사용자 당 하나의 카드정보를 사용하게 됩니다.', 'iamport-for-woocommerce' ),
+				'default' => 'no'
+            ),
 		);
 	}
 
@@ -334,7 +340,7 @@ class WC_Gateway_Iamport_Subscription extends WC_Payment_Gateway {
 			require_once(dirname(__FILE__).'/lib/iamport.php');
 
 			$customer_uid 	 = null;
-			if ( !$initial_payment || $subscribe_able ) $customer_uid 	 = IamportHelper::get_customer_uid($order);
+			if ( !$initial_payment || $subscribe_able ) $customer_uid 	 = $this->get_customer_uid($order, $initial_payment, $subscribe_able);
 
 			$tax_free_amount = IamportHelper::get_tax_free_amount($order);
 
@@ -495,7 +501,7 @@ class WC_Gateway_Iamport_Subscription extends WC_Payment_Gateway {
 		require_once(dirname(__FILE__).'/lib/iamport.php');
 
 		$order_id = $order->get_id();
-		$customer_uid = IamportHelper::get_customer_uid($order);
+		$customer_uid = $this->get_customer_uid($order, true, true);
 
 		$cardInfo = $this->getDecryptedCard();
 		if ( is_wp_error($cardInfo) )	return $cardInfo; //return WP_Error
@@ -733,6 +739,39 @@ class WC_Gateway_Iamport_Subscription extends WC_Payment_Gateway {
 		}
 
 		do_action('iamport_order_meta_saved', $order_id, $meta_key, $meta_value);
+	}
+
+	/**
+	 * 이슈: 
+	 * - 매 정기 주문마다 다른 결제수단을 이용할 수 있어함
+	 * - 기본적으로 사용자 당 하나의 결제정보만 기억하게 되어 있슴
+	 * - 관리자에게 설정을 제공하고 하나 또는 정기결제 별 결제수단 중 하나를 선택할 수 있게 함
+	 * - 기존 정기결제를 지원하기 위해 fallback 으로 이전 값을 제공함
+	 * 
+	 * @param  $order $order WC_Order
+	 * @return string        Unique Customer ID for Subscription
+	 */
+	private function get_customer_uid($order, $initial_payment = false, $subscribe_able = false) {
+
+		$site_customer_uid = IamportHelper::get_customer_uid($order);
+		$per_subscription_card = !empty($this->settings['per_subscription_card']) && $this->settings['per_subscription_card'] !== 'no';
+		if ( !$per_subscription_card || !$subscribe_able )
+			return $site_customer_uid;
+
+		if ( $order->get_type() == 'shop_subscription' ) {
+			$subscription_id = $order->get_id();
+			if ( $initial_payment ) {
+				return $site_customer_uid . 's' . $subscription_id;
+			}
+			if ( method_exists([$order, 'get_parent_order_id']) && ($parent_id = $order->get_parent_order_id()) ) {
+				$subscription_id = $parent_id;
+			}
+			if ( $saved = get_post_meta( $subscription_id, '_iamport_customer_uid', true ) ) {
+				return $saved;
+			}
+		}
+
+		return $site_customer_uid;
 	}
 
 	private function format_expiry($expiry) {
