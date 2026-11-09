@@ -1,5 +1,13 @@
 ![portone-banner-772x250](https://github.com/iamport/wordpress-iamport-for-woocommerce/assets/99194042/ef03d728-d30c-4150-8e40-765b4e762c0b)
 
+> [!WARNING]
+> **이 저장소는 더 이상 유지보수되지 않습니다 (Deprecated).**
+>
+> 포트원 우커머스 결제 플러그인의 최신 버전은 WordPress.org 플러그인 디렉터리를 통해 배포되며, 이 저장소의 코드는 최신 버전과 다릅니다.
+>
+> - [포트원 우커머스 결제 플러그인 (WordPress.org)](https://wordpress.org/plugins/iamport-for-woocommerce/)
+> - [우커머스 플러그인 연동 가이드](https://developers.portone.io/opi/ko/extra/plugins/wordpress/woocommerce/readme?v=v1)
+
 > 신용카드/실시간이체/가상계좌/휴대폰소액결제/간편결제 가능. 국내 여러 PG사를 지원.
 
 [워드프레스 플러그인 링크](https://wordpress.org/plugins/iamport-for-woocommerce/) 
